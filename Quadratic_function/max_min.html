@@ -1,6 +1,130 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>最大・最小ラボ</title><link rel="stylesheet" href="style.css"><script defer src="engine.js"></script><script defer src="script.js"></script></head>
-<body><header><div><small>高校数学 · INTERACTIVE MATH</small><h1>最大・最小ラボ</h1><p>動かす → 比べる → 場合分けの理由が見える</p></div><label>問題を選ぶ<select id="preset"><option value="A">A · 頂点が動く</option><option value="B">B · 定義域が動く</option><option value="C">C · 上に凸の二次関数</option><option value="D">D · 両方が動く</option><option value="E">E · 自由入力</option></select></label></header>
-<main><aside class="panel controls"><h2>式と定義域</h2><form id="formulaForm"><label>f(x) =<input id="formula" value="(x-a)^2" autocomplete="off" spellcheck="false"></label><div class="row"><label>左端<input id="left" value="0" autocomplete="off"></label><span>≦ x ≦</span><label>右端<input id="right" value="4" autocomplete="off"></label></div><button class="primary" type="submit">式を適用</button></form><details><summary>入力できる式</summary><p>例：2x^2、(x-a)^2、a*x^2+b*x+c、abs(x-a)、sin(x)、sqrt(x+2)</p><p>演算：+ − * / ^、括弧。関数：sin, cos, tan, abs, sqrt, exp, log, ln, floor, ceil。三角関数はラジアン。定数：pi, e。変数は小文字1文字です。</p></details><h2>パラメータ</h2><div id="parameters"></div><button id="resetParams">パラメータをリセット</button><p class="hint">数値を直接入力できます。設定を開くと範囲と刻み幅を変更できます。</p></aside>
-<section class="panel graphPanel"><div class="graphHead"><h2>グラフで見る</h2><div class="toolbar"><button id="zoomIn" aria-label="拡大">＋</button><button id="zoomOut" aria-label="縮小">−</button><button id="fit">表示をリセット</button></div></div><div id="mathDisplay" class="math"></div><div id="graphWrap"><canvas id="graph" aria-label="関数と定義域、最大点・最小点のグラフ"></canvas></div><div class="legend"><span class="blue">● 定義域内</span><span class="gray">● 定義域外</span><span class="red">● 最大</span><span class="green">● 最小</span><span class="purple">● 頂点・対称軸</span></div><p class="hint">グラフをドラッグして移動。＋ / − またはホイールで拡大・縮小。iPadではボタンで拡大できます。</p><div id="error" role="alert" hidden></div></section>
-<aside class="panel results"><h2>最大値・最小値</h2><p id="accuracy" class="badge"></p><div class="extreme minimum"><small>最小値</small><strong id="minValue">—</strong><div id="minAt"></div></div><div class="extreme maximum"><small>最大値</small><strong id="maxValue">—</strong><div id="maxAt"></div></div><h2>いま、どの場合？</h2><div id="explanation"></div><h2>場合分けの境界</h2><label id="boundaryLabel">動かすパラメータ<select id="boundaryParam"></select></label><div id="boundaries"></div><p class="hint">境界の前・一致・後を比較します。ほかのパラメータは現在の値に固定します。</p></aside></main><footer>二次関数は解析的に判定（数値表示は浮動小数点）。一般の関数の探索は大域的な最大・最小を保証しません。</footer></body></html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>最大・最小ラボ</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="engine.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <small>高校数学 · INTERACTIVE MATH</small>
+        <h1>最大・最小ラボ</h1>
+        <p>動かす → 比べる → 場合分けの理由が見える</p>
+      </div>
+      <label>
+        問題を選ぶ
+        <select id="preset">
+          <option value="A">A · 頂点が動く</option>
+          <option value="B">B · 定義域が動く</option>
+          <option value="C">C · 上に凸の二次関数</option>
+          <option value="D">D · 両方が動く</option>
+          <option value="E">E · 自由入力</option>
+        </select>
+      </label>
+    </header>
+    <main>
+      <aside class="panel controls">
+        <h2>式と定義域</h2>
+        <form id="formulaForm">
+          <label>
+            f(x) =
+            <input
+              id="formula"
+              value="(x-a)^2"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </label>
+          <div class="row">
+            <label>
+              左端
+              <input id="left" value="0" autocomplete="off" />
+            </label>
+            <span>≦ x ≦</span>
+            <label>
+              右端
+              <input id="right" value="4" autocomplete="off" />
+            </label>
+          </div>
+          <button class="primary" type="submit">式を適用</button>
+        </form>
+        <details>
+          <summary>入力できる式</summary>
+          <p>例：2x^2、(x-a)^2、a*x^2+b*x+c、abs(x-a)、sin(x)、sqrt(x+2)</p>
+          <p
+            >演算：+ − * / ^、括弧。関数：sin, cos, tan, abs, sqrt, exp, log,
+            ln, floor, ceil。三角関数はラジアン。定数：pi,
+            e。変数は小文字1文字です。</p
+          >
+        </details>
+        <h2>パラメータ</h2>
+        <div id="parameters"></div>
+        <button id="resetParams">パラメータをリセット</button>
+        <p class="hint"
+          >数値を直接入力できます。設定を開くと範囲と刻み幅を変更できます。</p
+        >
+      </aside>
+      <section class="panel graphPanel">
+        <div class="graphHead">
+          <h2>グラフで見る</h2>
+          <div class="toolbar">
+            <button id="zoomIn" aria-label="拡大">＋</button>
+            <button id="zoomOut" aria-label="縮小">−</button>
+            <button id="fit">表示をリセット</button>
+          </div>
+        </div>
+        <div id="mathDisplay" class="math"></div>
+        <div id="graphWrap">
+          <canvas
+            id="graph"
+            aria-label="関数と定義域、最大点・最小点のグラフ"
+          ></canvas>
+        </div>
+        <div class="legend">
+          <span class="blue">● 定義域内</span>
+          <span class="gray">● 定義域外</span>
+          <span class="red">● 最大</span>
+          <span class="green">● 最小</span>
+          <span class="purple">● 頂点・対称軸</span>
+        </div>
+        <p class="hint"
+          >グラフをドラッグして移動。＋ / −
+          またはホイールで拡大・縮小。iPadではボタンで拡大できます。</p
+        >
+        <div id="error" role="alert" hidden></div>
+      </section>
+      <aside class="panel results">
+        <h2>最大値・最小値</h2>
+        <p id="accuracy" class="badge"></p>
+        <div class="extreme minimum">
+          <small>最小値</small>
+          <strong id="minValue">—</strong>
+          <div id="minAt"></div>
+        </div>
+        <div class="extreme maximum">
+          <small>最大値</small>
+          <strong id="maxValue">—</strong>
+          <div id="maxAt"></div>
+        </div>
+        <h2>いま、どの場合？</h2>
+        <div id="explanation"></div>
+        <h2>場合分けの境界</h2>
+        <label id="boundaryLabel">
+          動かすパラメータ
+          <select id="boundaryParam"></select>
+        </label>
+        <div id="boundaries"></div>
+        <p class="hint"
+          >境界の前・一致・後を比較します。ほかのパラメータは現在の値に固定します。</p
+        >
+      </aside>
+    </main>
+    <footer
+      >二次関数は解析的に判定（数値表示は浮動小数点）。一般の関数の探索は大域的な最大・最小を保証しません。</footer
+    >
+  </body>
+</html>

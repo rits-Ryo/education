@@ -1,0 +1,5 @@
+# Temporary files and local environment state (never commit this directory).
+/.local/
+
+# Local instructions for agents (not for publication).
+/AGENTS.md
