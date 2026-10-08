@@ -4,6 +4,8 @@
 
 ## 起動
 
+GitHub Pagesで利用する場合は <https://rits-ryo.github.io/education/> の教材一覧から「最大・最小ラボ」を選んでください。以下は手元で開発・確認する場合の手順です。
+
 1. VS Codeでこのフォルダを開きます。
 2. Live Server拡張機能を使用し、`max_min.html` を右クリックして「Open with Live Server」を選びます。
 3. またはブラウザで `max_min.html` を直接開けます（すべてのファイルを同じフォルダに置いてください）。
