@@ -593,27 +593,84 @@ $('fit').onclick = () => {
   fitView();
   draw();
 };
-let drag = null;
-$('graph').addEventListener('pointerdown', (e) => {
-  if (!view) return;
-  drag = { x: e.clientX, y: e.clientY, view: { ...view } };
-  $('graph').setPointerCapture(e.pointerId);
-});
-$('graph').addEventListener('pointermove', (e) => {
-  if (!drag) return;
-  const r = $('graph').getBoundingClientRect(),
-    dx = ((e.clientX - drag.x) / r.width) * (drag.view.xmax - drag.view.xmin),
-    dy = ((e.clientY - drag.y) / r.height) * (drag.view.ymax - drag.view.ymin);
-  view = {
-    xmin: drag.view.xmin - dx,
-    xmax: drag.view.xmax - dx,
-    ymin: drag.view.ymin + dy,
-    ymax: drag.view.ymax + dy
+// Keep a snapshot of the active pointers so switching between pan and pinch
+// does not jump when a finger is added or lifted.
+const graphPointers = new Map();
+let graphGesture = null;
+
+function pointerGeometry(points) {
+  const first = points[0];
+  if (points.length === 1)
+    return { x: first.x, y: first.y, distance: null };
+  const second = points[1];
+  return {
+    x: (first.x + second.x) / 2,
+    y: (first.y + second.y) / 2,
+    distance: Math.hypot(second.x - first.x, second.y - first.y)
   };
+}
+
+function resetGraphGesture() {
+  graphGesture = graphPointers.size && view
+    ? {
+        ...pointerGeometry([...graphPointers.values()]),
+        view: { ...view }
+      }
+    : null;
+}
+
+$('graph').addEventListener('pointerdown', (e) => {
+  if (!view || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  graphPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  $('graph').setPointerCapture(e.pointerId);
+  resetGraphGesture();
+});
+
+$('graph').addEventListener('pointermove', (e) => {
+  if (!graphPointers.has(e.pointerId) || !graphGesture) return;
+  graphPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  const current = pointerGeometry([...graphPointers.values()]);
+  const rect = $('graph').getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  // A growing finger distance narrows the graph range (zoom in). The graph
+  // coordinate under the initial midpoint follows the moving midpoint.
+  let factor = 1;
+  if (current.distance !== null) {
+    if (graphGesture.distance < 1 || current.distance < 1) {
+      resetGraphGesture();
+      return;
+    }
+    factor = graphGesture.distance / current.distance;
+  }
+  const initial = graphGesture.view;
+  const width = (initial.xmax - initial.xmin) * factor;
+  const height = (initial.ymax - initial.ymin) * factor;
+  const anchorX = initial.xmin +
+    ((graphGesture.x - rect.left) / rect.width) * (initial.xmax - initial.xmin);
+  const anchorY = initial.ymax -
+    ((graphGesture.y - rect.top) / rect.height) * (initial.ymax - initial.ymin);
+  const xmin = anchorX - ((current.x - rect.left) / rect.width) * width;
+  const ymax = anchorY + ((current.y - rect.top) / rect.height) * height;
+  const nextView = {
+    xmin,
+    xmax: xmin + width,
+    ymin: ymax - height,
+    ymax
+  };
+  if (!Object.values(nextView).every(Number.isFinite) ||
+      nextView.xmin >= nextView.xmax || nextView.ymin >= nextView.ymax) return;
+  view = nextView;
   draw();
 });
-for (const event of ['pointerup', 'pointercancel'])
-  $('graph').addEventListener(event, () => (drag = null));
+
+function endGraphPointer(e) {
+  if (!graphPointers.delete(e.pointerId)) return;
+  resetGraphGesture();
+}
+
+for (const event of ['pointerup', 'pointercancel', 'lostpointercapture'])
+  $('graph').addEventListener(event, endGraphPointer);
 $('graph').addEventListener(
   'wheel',
   (e) => {
