@@ -1,25 +1,42 @@
 # education
 
-数学を視覚的に学ぶWeb教材です。
+教科ごとのインタラクティブなWeb教材です。
 
-## 公開ページ
+## 公開ページと階層
 
-<https://rits-ryo.github.io/education/> は教材一覧です。各教材の「教材を開く」から利用できます。iPadではSafariで開いてください。
+<https://rits-ryo.github.io/education/> から、教科、教材の順に選びます。
 
-現在の教材：
+- エントランス：リポジトリ直下の index.html
+- 数学：subjects/math/index.html → 2次関数の最大・最小
+- 物理：subjects/physics/index.html（教材の追加予定）
+- 化学：subjects/chemistry/index.html（教材の追加予定）
+- 英語：subjects/english/index.html（教材の追加予定）
 
-- [最大・最小ラボ](Quadratic_function/max_min.html)：二次関数の最大値・最小値、定義域、パラメータによる場合分け。
+PC・iPadのブラウザで利用できます。GitHub Pagesの公開元は対象ブランチの /(root) です。教材のURLは subjects/math/Quadratic_function/max_min.html です。
 
-GitHub Pagesの公開元は、公開するブランチの `/(root)` にしてください。トップページは `index.html`、一覧のデザインは `catalog.css` です。`.nojekyll` を置き、静的ファイルとして公開します。変更をGitHubに反映し、Pagesのデプロイが完了すると更新されます。
+## ファイルの役割
 
-## 教材を追加する
+- catalog-data.js：教科・教材の登録データ。タイトル、説明、リンク、タグを一か所で管理します。
+- catalog.js：入口・教科別ページの共通表示処理。
+- catalog.css：入口・教科別ページの共通デザイン。
+- subjects/：教科別の一覧ページ。教材の計算や描画のコードは置きません。
+- subjects/math/Quadratic_function/：二次関数の最大・最小専用のHTML・CSS・JavaScript・テスト・操作説明。共通の一覧や別教材の実装は置きません。
 
-1. 教材ごとのフォルダを作成し、HTML・CSS・JavaScriptなどを配置します。
-2. `index.html` の `<article class="material">` を複製します。
-3. 科目・タイトル・説明・機能タグ・イラストを新しい教材に合わせて変更します。
-4. 「教材を開く」の `href` を `./新しいフォルダ/教材.html` のような相対パスにします。GitHub Pagesでは大文字・小文字を正しく合わせてください。
-5. トップページから教材を開けることを確認し、このREADMEの教材一覧にも追加します。
+教材本体は独立したフォルダーで管理します。入口・教科別一覧から教材へリンクし、教材の計算処理は共通カタログに依存しません。教材の説明は [2次関数の最大・最小のREADME](subjects/math/Quadratic_function/README.md) を参照してください。
 
-教材一覧はJavaScriptなしで表示されます。カードは画面幅に応じて自動的に並び替わります。
+## 既存の教科へ教材を追加する
 
-教材の起動方法・操作方法・計算の制限は [最大・最小ラボのREADME](Quadratic_function/README.md) を参照してください。
+1. 該当する subjects/教科/ の下に新しい教材専用のフォルダーを作成し、HTML・CSS・JavaScriptなどを配置します。二次関数の最大・最小以外の教材を subjects/math/Quadratic_function/ に追加しないでください。
+2. catalog-data.js の該当教科の materials 配列に項目を追加します。既存の数学の教材登録が例です。
+3. id（教科内で一意）、title、category、description、path、tags を指定します。path はリポジトリ直下を基準にした相対パス（例：subjects/math/New_material/index.html）です。大文字・小文字を正確に合わせてください。
+4. 教材に教科別一覧へ戻るリンクを設け、入口 → 教科 → 教材 → 教科の移動を確認します。
+
+登録データの変更は入口の教材数と教科別一覧の両方に反映されます。教材が0件の教科は追加予定と表示され、存在しない教材へのリンクは生成されません。公開する項目のみ登録し、機密情報・ローカル環境情報を含めないでください。
+
+## 教科を追加する
+
+1. catalog-data.js の subjects 配列に、新しい id、title、description、path、materials を追加します。
+2. subjects/ の既存ページを複製し、body の data-subject を登録した id に変更します。ページタイトルとパンくずの教科名も変更してください。
+3. 入口の noscript 内の教科リンクも追加します。JavaScript無効時の案内に使用します。
+
+一覧は共通のJavaScriptで描画されます。ビルドや外部ライブラリは不要です。共通ファイルを相対パスで読み込むため、GitHub Pagesのリポジトリ名を含むURLでも利用できます。

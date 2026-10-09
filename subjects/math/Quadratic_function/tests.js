@@ -18,19 +18,7 @@ check('left endpoint vertex', '(x-a)^2', 0, 4, { a: 0 }, 0, 16, [0], [4]);
 check('right endpoint vertex', '(x-a)^2', 0, 4, { a: 4 }, 0, 16, [4], [0]);
 check('both endpoints', '(x-a)^2', 0, 4, { a: 2 }, 0, 4, [2], [0, 4]);
 check('negative coefficient', '-(x-a)^2+4', 0, 4, { a: 2 }, 0, 4, [0, 4], [2]);
-check(
-  'linear degeneration',
-  'a*x^2+b*x+c',
-  0,
-  4,
-  { a: 0, b: -2, c: 3 },
-  -5,
-  3,
-  [4],
-  [0]
-);
-check('constant degeneration', 'a*x^2+b*x+c', 0, 4, { a: 0, b: 0, c: 3 }, 3, 3);
-check('singleton', 'sqrt(x+2)', -2, -2, {}, 0, 0, [-2], [-2]);
+check('singleton', 'x^2', 2, 2, {}, 4, 4, [2], [2]);
 check(
   'multiple parameters',
   'a*x^2+b*x+c',
@@ -43,11 +31,15 @@ check(
   [-2]
 );
 check('moving domain', 'x^2', -2, 0, {}, 0, 4, [0], [-2]);
-check('absolute', 'abs(x-a)', 0, 4, { a: 1.234 }, 0, 2.766);
-check('sine', 'sin(x)', 0, Math.PI, {}, 0, 1);
-check('cubic', 'x^3-3*a*x', -2, 2, { a: 1 }, -2, 2);
-check('sqrt', 'sqrt(x+2)', -2, 3, {}, 0, Math.sqrt(5));
 for (const [name, fn] of [
+  ['linear', () => E.solve(E.parse('x+1'), {}, 0, 4)],
+  ['constant', () => E.solve(E.parse('3'), {}, 0, 4)],
+  ['zero quadratic coefficient', () => E.solve(E.parse('a*x^2+b*x+c'), {a:0,b:2,c:1}, 0, 4)],
+  ['cubic', () => E.solve(E.parse('x^3-3*x'), {}, -2, 2)],
+  ['sine', () => E.solve(E.parse('sin(x)'), {}, 0, 4)],
+  ['absolute', () => E.solve(E.parse('abs(x)'), {}, -1, 1)],
+  ['sqrt on singleton', () => E.solve(E.parse('sqrt(x+2)'), {}, 0, 0)],
+
   ['reversed', () => E.solve(E.parse('x^2'), {}, 4, 0)],
   ['syntax', () => E.parse('x+(')],
   ['injection', () => E.parse('alert(1)')],

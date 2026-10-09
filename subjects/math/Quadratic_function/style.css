@@ -11,6 +11,13 @@
 * {
   box-sizing: border-box;
 }
+.catalog-back {
+  display: inline-block;
+  min-height: 44px;
+  padding: 10px 0;
+  color: #226bd6;
+  font-size: 14px;
+}
 body {
   margin: 0;
 }
@@ -102,6 +109,14 @@ select:focus-visible {
 }
 .primary:hover {
   background: #1554af;
+}
+input[readonly] {
+  background: #f0f4f9;
+  color: #52657e;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
 .row {
   display: flex;

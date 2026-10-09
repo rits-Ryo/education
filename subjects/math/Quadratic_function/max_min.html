@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>最大・最小ラボ</title>
+    <title>2次関数の最大・最小</title>
     <link rel="stylesheet" href="style.css" />
     <script defer src="engine.js"></script>
     <script defer src="script.js"></script>
@@ -11,9 +11,10 @@
   <body>
     <header>
       <div>
-        <small>高校数学 · INTERACTIVE MATH</small>
-        <h1>最大・最小ラボ</h1>
-        <p>動かす → 比べる → 場合分けの理由が見える</p>
+        <small>高校数学 · 目で見てわかる数学</small>
+        <h1>2次関数の最大・最小</h1>
+        <p>グラフを動かして場合分けの理由を理解する</p>
+        <a class="catalog-back" href="../index.html">数学の教材一覧へ</a>
       </div>
       <label>
         問題を選ぶ
@@ -41,24 +42,24 @@
           </label>
           <div class="row">
             <label>
-              左端
+              定義域の左端
               <input id="left" value="0" autocomplete="off" />
             </label>
             <span>≦ x ≦</span>
             <label>
-              右端
+              定義域の右端
               <input id="right" value="4" autocomplete="off" />
             </label>
           </div>
-          <button class="primary" type="submit">式を適用</button>
+          <button id="applyFormula" class="primary" type="submit">式を適用</button>
         </form>
         <details>
           <summary>入力できる式</summary>
-          <p>例：2x^2、(x-a)^2、a*x^2+b*x+c、abs(x-a)、sin(x)、sqrt(x+2)</p>
+          <p>例：2x^2、(x-a)^2、a*x^2+b*x+c、-x^2+a*x+1</p>
           <p
-            >演算：+ − * / ^、括弧。関数：sin, cos, tan, abs, sqrt, exp, log,
-            ln, floor, ceil。三角関数はラジアン。定数：pi,
-            e。変数は小文字1文字です。</p
+            >二次関数のみ対応しています。演算：+ − * / ^、括弧。
+            定数：pi, e。変数は小文字1文字です。
+            二次の係数が0になる場合や、一次・定数・三次関数などはエラーになります。</p
           >
         </details>
         <h2>パラメータ</h2>
@@ -99,7 +100,6 @@
       </section>
       <aside class="panel results">
         <h2>最大値・最小値</h2>
-        <p id="accuracy" class="badge"></p>
         <div class="extreme minimum">
           <small>最小値</small>
           <strong id="minValue">—</strong>
@@ -118,13 +118,7 @@
           <select id="boundaryParam"></select>
         </label>
         <div id="boundaries"></div>
-        <p class="hint"
-          >境界の前・一致・後を比較します。ほかのパラメータは現在の値に固定します。</p
-        >
       </aside>
     </main>
-    <footer
-      >二次関数は解析的に判定（数値表示は浮動小数点）。一般の関数の探索は大域的な最大・最小を保証しません。</footer
-    >
   </body>
 </html>

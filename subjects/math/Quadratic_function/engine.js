@@ -156,184 +156,25 @@
     while (r.length > 1 && r.at(-1) === 0) r.pop();
     return r.length <= 3 && r.every(Number.isFinite) ? r : null;
   }
-  // Interval arithmetic proves real-valued continuity only for a conservative subset.
-  function interval(n, s, L, R) {
-    if (n.op === 'num') return [n.v, n.v];
-    if (n.op === 'var') return n.name === 'x' ? [L, R] : [s[n.name], s[n.name]];
-    let a = interval(n.a, s, L, R);
-    if (!a) return null;
-    if (n.op === 'neg') return [-a[1], -a[0]];
-    if (n.op === 'pos') return a;
-    if (n.op === 'fn') {
-      switch (n.name) {
-        case 'sin':
-        case 'cos':
-          return [-1, 1];
-        case 'abs':
-          return [
-            a[0] <= 0 && a[1] >= 0
-              ? 0
-              : Math.min(Math.abs(a[0]), Math.abs(a[1])),
-            Math.max(Math.abs(a[0]), Math.abs(a[1]))
-          ];
-        case 'sqrt':
-          return a[0] >= 0 ? [Math.sqrt(a[0]), Math.sqrt(a[1])] : null;
-        case 'log':
-        case 'ln':
-          return a[0] > 0 ? [Math.log(a[0]), Math.log(a[1])] : null;
-        case 'exp':
-          return [Math.exp(a[0]), Math.exp(a[1])];
-        default:
-          return null;
-      }
+  function solve(tree, scope, L, R) {
+    const p = polynomial(tree, scope);
+    if (!p || p.length !== 3 || !p.every(Number.isFinite) || p[2] === 0) {
+      throw Error('二次関数のみ対応しています。f(x) = A*x^2+B*x+C（A ≠ 0）となる式を入力してください。現在のパラメータで二次の係数が0になる場合も対象外です。');
     }
-    let b = interval(n.b, s, L, R);
-    if (!b) return null;
-    switch (n.op) {
-      case '+':
-        return [a[0] + b[0], a[1] + b[1]];
-      case '-':
-        return [a[0] - b[1], a[1] - b[0]];
-      case '*': {
-        const v = [a[0] * b[0], a[0] * b[1], a[1] * b[0], a[1] * b[1]];
-        return [Math.min(...v), Math.max(...v)];
-      }
-      case '/': {
-        if (b[0] <= 0 && b[1] >= 0) return null;
-        const v = [a[0] / b[0], a[0] / b[1], a[1] / b[0], a[1] / b[1]];
-        return [Math.min(...v), Math.max(...v)];
-      }
-      case '^': {
-        if (b[0] !== b[1]) return null;
-        const p = b[0];
-        if (
-          (!Number.isInteger(p) && a[0] < 0) ||
-          (p < 0 && a[0] <= 0 && a[1] >= 0)
-        )
-          return null;
-        const v = [a[0] ** p, a[1] ** p];
-        if (
-          Number.isInteger(p) &&
-          p > 0 &&
-          p % 2 === 0 &&
-          a[0] <= 0 &&
-          a[1] >= 0
-        )
-          v.push(0);
-        return [Math.min(...v), Math.max(...v)];
-      }
-    }
-    return null;
-  }
-  function solve(tree, s, L, R) {
     if (!Number.isFinite(L) || !Number.isFinite(R) || L > R)
       throw Error('定義域は有限で、左端 ≦ 右端にしてください。');
-    const p = polynomial(tree, s),
-      f = (x) => evaluate(tree, { ...s, x });
-    if (L === R) {
-      let y = f(L);
-      if (!Number.isFinite(y)) throw Error('この点では関数が定義されません。');
-      return {
-        exact: !!p,
-        min: y,
-        max: y,
-        minX: [L],
-        maxX: [L],
-        p,
-        constant: true
-      };
-    }
-    let pts = [L, R],
-      vertex = null;
-    if (p) {
-      let A = p[2] || 0,
-        B = p[1] || 0;
-      let minX, maxX;
-      if (A === 0) {
-        minX = B > 0 ? [L] : B < 0 ? [R] : [L, R];
-        maxX = B > 0 ? [R] : B < 0 ? [L] : [L, R];
-      } else {
-        vertex = -B / (2 * A) || 0;
-        const near = Math.max(L, Math.min(R, vertex)) || 0,
-          mid = L + (R - L) / 2,
-          far = vertex < mid ? [R] : vertex > mid ? [L] : [L, R];
-        minX = A > 0 ? [near] : far;
-        maxX = A > 0 ? far : [near];
-      }
-      const min = f(minX[0]),
-        max = f(maxX[0]);
-      if (
-        !Number.isFinite(min) ||
-        !Number.isFinite(max) ||
-        (vertex !== null && !Number.isFinite(vertex))
-      )
-        throw Error('計算可能な数値の範囲を超えました。');
-      return {
-        exact: true,
-        p,
-        vertex,
-        min,
-        max,
-        minX,
-        maxX,
-        constant: p.length === 1
-      };
-    } else {
-      const range = interval(tree, s, L, R);
-      if (!range || !range.every(Number.isFinite))
-        throw Error(
-          '定義域全体での連続性・定義を確認できません。最大・最小は判定できません。式や定義域を変更してください。'
-        );
-      for (let i = 1; i < 2048; i++) pts.push(L + ((R - L) * i) / 2048);
-      // Refine sampled local extrema with bounded golden-section search.
-      const sampled = pts.slice(2).sort((a, b) => a - b);
-      let xs = [L, ...sampled, R],
-        ys = xs.map(f);
-      if (ys.some((y) => !Number.isFinite(y)))
-        throw Error('未定義点が検出されました。');
-      for (let i = 1; i < xs.length - 1; i++)
-        for (const sign of [1, -1])
-          if (
-            sign * ys[i] <= sign * ys[i - 1] &&
-            sign * ys[i] <= sign * ys[i + 1] &&
-            (ys[i] !== ys[i - 1] || ys[i] !== ys[i + 1])
-          ) {
-            let l = xs[i - 1],
-              r = xs[i + 1];
-            for (let k = 0; k < 45; k++) {
-              let u = l + (r - l) * 0.381966,
-                v = l + (r - l) * 0.618034;
-              if (sign * f(u) < sign * f(v)) r = v;
-              else l = u;
-            }
-            pts.push((l + r) / 2);
-          }
-    }
-    let vals = pts.map(f);
-    if (vals.some((y) => !Number.isFinite(y)))
-      throw Error('有限の値を計算できません。');
-    let min = Math.min(...vals),
-      max = Math.max(...vals);
-    const collect = (v) =>
-      pts
-        .filter(
-          (x, i) => Math.abs(vals[i] - v) <= 1e-9 * Math.max(1, Math.abs(v))
-        )
-        .sort((a, b) => a - b)
-        .filter(
-          (x, i, arr) =>
-            i === 0 || Math.abs(x - arr[i - 1]) > 1e-6 * Math.max(1, R - L)
-        );
-    return {
-      exact: !!p,
-      p,
-      vertex,
-      min,
-      max,
-      minX: collect(min),
-      maxX: collect(max),
-      constant: p && p.length === 1
-    };
+    const f = (x) => evaluate(tree, { ...scope, x });
+    const A = p[2], B = p[1];
+    const vertex = -B / (2 * A) || 0;
+    const near = Math.max(L, Math.min(R, vertex)) || 0;
+    const mid = L + (R - L) / 2;
+    const far = L === R ? [L] : vertex < mid ? [R] : vertex > mid ? [L] : [L, R];
+    const minX = A > 0 ? [near] : far;
+    const maxX = A > 0 ? far : [near];
+    const min = f(minX[0]), max = f(maxX[0]);
+    if (![vertex, min, max].every(Number.isFinite))
+      throw Error('計算可能な数値の範囲を超えました。');
+    return { exact: true, p, vertex, min, max, minX, maxX, constant: false };
   }
   function boundaryEquations(tree, left, right, scope, param) {
     const num = (v) => ({ op: 'num', v }),

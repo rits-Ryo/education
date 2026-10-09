@@ -16,6 +16,35 @@ const presets = {
   C: ['-(x-a)^2+4', '0', '4'],
   D: ['(x-a)^2', 'a-1', '3']
 };
+let selectedPreset = $('preset').value;
+let freeFormula = ['', '0', '4'];
+
+function syncFormulaInputs() {
+  const fixed = presets[$('preset').value];
+  ['formula', 'left', 'right'].forEach((id, i) => {
+    $(id).readOnly = !!fixed;
+    if (fixed) $(id).value = fixed[i];
+  });
+  $('applyFormula').disabled = !!fixed;
+}
+
+function clearFormula() {
+  clearTimeout(boundaryTimer);
+  model = null;
+  result = null;
+  domain = null;
+  view = { xmin: -5, xmax: 5, ymin: -5, ymax: 5 };
+  $('error').hidden = true;
+  $('error').textContent = '';
+  for (const id of ['minValue', 'maxValue']) $(id).textContent = '—';
+  for (const id of [
+    'minAt', 'maxAt', 'explanation', 'boundaries', 'parameters',
+    'boundaryParam', 'mathDisplay'
+  ]) $(id).replaceChildren();
+  $('boundaryLabel').hidden = true;
+  $('resetParams').disabled = true;
+  draw();
+}
 function el(tag, text, className) {
   const n = document.createElement(tag);
   if (text !== undefined) n.textContent = text;
@@ -23,6 +52,11 @@ function el(tag, text, className) {
   return n;
 }
 function apply() {
+  syncFormulaInputs();
+  if (!$('formula').value.trim()) {
+    clearFormula();
+    return;
+  }
   try {
     const f = E.parse($('formula').value),
       l = E.parse($('left').value),
@@ -35,6 +69,7 @@ function apply() {
       .filter((n) => n !== 'x')
       .sort();
     model = { f, l, r, names };
+    $('resetParams').disabled = false;
     for (const n of names) {
       if (!configs[n]) configs[n] = { min: -5, max: 6, step: 0.05, initial: 0 };
       if (!(n in scope)) scope[n] = 0;
@@ -135,7 +170,6 @@ function showError(message) {
   result = null;
   $('error').hidden = false;
   $('error').textContent = message;
-  $('accuracy').textContent = '判定できません';
   for (const id of ['minValue', 'maxValue']) $(id).textContent = '—';
   for (const id of ['minAt', 'maxAt', 'explanation', 'boundaries'])
     $(id).replaceChildren();
@@ -154,6 +188,7 @@ function pretty(source) {
   return frag;
 }
 function update(fit) {
+  if (!model) return;
   try {
     domain = [E.evaluate(model.l, scope), E.evaluate(model.r, scope)];
     result = E.solve(model.f, scope, ...domain);
@@ -164,14 +199,11 @@ function update(fit) {
       el('br'),
       document.createTextNode(`${fmt(domain[0])} ≦ x ≦ ${fmt(domain[1])}`)
     );
-    $('accuracy').textContent = result.exact
-      ? '解析的判定 · 二次／一次／定数関数'
-      : '数値探索の近似候補 · 大域的な保証なし';
     for (const kind of ['min', 'max']) {
       $(kind + 'Value').textContent =
         (result.exact ? '' : '≈ ') + fmt(result[kind]);
       $(kind + 'At').textContent = result.constant
-        ? '定義域のすべての x で達成'
+        ? '定義域のすべての x'
         : `x ${result.exact ? '=' : '≈'} ${result[kind + 'X'].slice(0, 12).map(fmt).join(', ')}${result[kind + 'X'].length > 12 ? ' …（ほかにも候補あり）' : ''}`;
     }
     explain();
@@ -183,6 +215,18 @@ function update(fit) {
     showError(e.message);
   }
 }
+function completedSquare(p) {
+  const A = p[2], B = p[1] || 0, C = p[0] || 0;
+  const v = -B / (2 * A) || 0;
+  const k = C + (B / 2) * v;
+  const coefficient = A === 1 ? '' : A === -1 ? '-' : `${fmt(A)}*`;
+  const square = v === 0 ? 'x^2'
+    : `(x${v > 0 ? '-' : '+'}${fmt(Math.abs(v))})^2`;
+  const constant = k === 0 ? '' : `${k > 0 ? '+' : '-'}${fmt(Math.abs(k))}`;
+  const rounded = [A, v, k].some((value) => Number(fmt(value)) !== value);
+  return `f(x) ${rounded ? '≈' : '='} ${coefficient}${square}${constant}`;
+}
+
 function explain() {
   const box = $('explanation');
   box.replaceChildren();
@@ -199,6 +243,10 @@ function explain() {
   const p = result.p,
     A = p[2] || 0,
     B = p[1] || 0;
+  const square = el('p', undefined, 'completed-square');
+  square.append(document.createTextNode('平方完成：'), el('br'),
+    pretty(completedSquare(p)));
+  box.append(square);
   if (L === R) {
     box.append(
       el('p', '定義域は1点です。この点の値が最大値でも最小値でもあります。')
@@ -212,8 +260,8 @@ function explain() {
         B === 0
           ? '定数関数です。定義域全体で最大値と最小値が一致します。'
           : B > 0
-            ? '一次関数で増加します。左端で最小、右端で最大です。'
-            : '一次関数で減少します。左端で最大、右端で最小です。'
+            ? '一次関数で増加します。定義域の左端で最小、定義域の右端で最大です。'
+            : '一次関数で減少します。定義域の左端で最大、定義域の右端で最小です。'
       )
     );
     return;
@@ -226,40 +274,14 @@ function explain() {
   box.append(
     el(
       'p',
-      `二次の係数 A = ${fmt(A)}。${up ? '下に凸' : '上に凸'}で、頂点の x 座標は v = −B/(2A) = ${fmt(v)}。`
-    )
-  );
-  box.append(
-    el(
-      'p',
-      `${inner}：${v < L ? '頂点が左端より左にあるため、左端' : v > R ? '頂点が右端より右にあるため、右端' : v === L ? '頂点と左端が一致' : v === R ? '頂点と右端が一致' : '頂点が定義域内にあるため、頂点'}で達成。`
+      `${inner}：${v < L ? `頂点が定義域の左端より左にあるため、定義域の左端で${inner}になります` : v > R ? `頂点が定義域の右端より右にあるため、定義域の右端で${inner}になります` : v === L ? '頂点と定義域の左端が一致します' : v === R ? '頂点と定義域の右端が一致します' : `頂点が定義域内にあるため、頂点で${inner}になります`}。`
     )
   );
   const diff = A * (L - R) * (L + R - 2 * v);
   box.append(
     el(
       'p',
-      `${outer}：${v === mid ? '左右の端点の値が等しいため、両端' : (up ? diff > 0 : diff < 0) ? '左端が頂点から遠いため、左端' : '右端が頂点から遠いため、右端'}で達成。区間の中点は ${fmt(mid)} です。`
-    )
-  );
-  const table = el('table');
-  for (const [condition, location] of [
-    [`v < L`, `${inner}は左端`],
-    [`L ≦ v ≦ R`, `${inner}は頂点`],
-    [`R < v`, `${inner}は右端`],
-    [`v < (L+R)/2`, `${outer}は右端`],
-    [`v = (L+R)/2`, `${outer}は両端`],
-    [`v > (L+R)/2`, `${outer}は左端`]
-  ]) {
-    const tr = el('tr');
-    tr.append(el('td', condition), el('td', location));
-    table.append(tr);
-  }
-  box.append(
-    table,
-    el(
-      'p',
-      'L は左端、R は右端。端点の比較は f(L) − f(R) = A(L−R)(L+R−2v) から説明できます。'
+      `${outer}：${v === mid ? '左右の端点の値が等しいため、両端' : (up ? diff > 0 : diff < 0) ? '定義域の左端が頂点から遠いため、定義域の左端' : '定義域の右端が頂点から遠いため、定義域の右端'}で${outer}になります。区間の中点のx座標は ${fmt(mid)} です。`
     )
   );
 }
@@ -288,13 +310,6 @@ function findBoundaries() {
       B = p[1] || 0;
     return [B + 2 * A * L, B + 2 * A * R, B + A * (L + R), A, R - L];
   };
-  const titles = [
-    '頂点と左端の一致',
-    '頂点と右端の一致',
-    '両端の値の一致',
-    '二次の係数が0',
-    '定義域が1点'
-  ];
   let roots = [];
   const analytic = E.boundaryEquations(model.f, model.l, model.r, scope, n);
   // These are numerical roots of the derived equations, not symbolic parameter inequalities.
@@ -370,16 +385,7 @@ function findBoundaries() {
           ? ' active'
           : '')
     );
-    card.append(
-      el('strong', `${n} ${root.analytic ? '=' : '≈'} ${fmt(root.t)}`),
-      el(
-        'small',
-        titles[root.k] +
-          (root.analytic
-            ? ' · 方程式から解析（表示は丸め）'
-            : ' · 数値的な境界候補')
-      )
-    );
+    card.append(el('strong', `${n} ${root.analytic ? '=' : '≈'} ${fmt(root.t)}`));
     const row = el('div', undefined, 'row');
     const eps = Math.max(width / 1000, Math.min(c.step, width / 100));
     for (const [label, offset] of [
@@ -399,13 +405,6 @@ function findBoundaries() {
     card.append(row);
     box.append(card);
   }
-  box.append(
-    el(
-      'p',
-      '頂点と端点・中点の一致、係数0、区間の退化が境界です。パラメータについて二次以下の方程式は解析し、それ以外は数値探索します。数値探索では境界を見落とすことがあります。',
-      'hint'
-    )
-  );
 }
 function fitView() {
   if (!domain) return;
@@ -434,7 +433,7 @@ function draw() {
   ctx.scale(dpr, dpr);
   const W = rect.width,
     H = rect.height;
-  if (!model || !view) return;
+  if (!view) return;
   const { xmin, xmax, ymin, ymax } = view,
     X = (x) => ((x - xmin) / (xmax - xmin)) * W,
     Y = (y) => H - ((y - ymin) / (ymax - ymin)) * H;
@@ -445,6 +444,17 @@ function draw() {
   };
   ctx.font = '12px system-ui';
   ctx.lineWidth = 1;
+  const occupied = [];
+  const overlaps = (a, b) =>
+    a.x < b.x + b.w && a.x + a.w > b.x &&
+    a.y < b.y + b.h && a.y + a.h > b.y;
+  const axisText = (text, x, baseline) => {
+    const box = { x: x - 3, y: baseline - 14,
+      w: ctx.measureText(text).width + 6, h: 19 };
+    if (occupied.some((other) => overlaps(box, other))) return;
+    ctx.fillText(text, x, baseline);
+    occupied.push(box);
+  };
   for (const [lo, hi, s, vertical] of [
     [xmin, xmax, step(xmax - xmin), true],
     [ymin, ymax, step(ymax - ymin), false]
@@ -461,7 +471,9 @@ function draw() {
         : (ctx.moveTo(0, Y(t)), ctx.lineTo(W, Y(t)));
       ctx.stroke();
       ctx.fillStyle = '#607088';
-      ctx.fillText(
+      // Show the origin once instead of drawing both axes' zero labels.
+      if (!vertical && Math.abs(t) < s * 1e-8) continue;
+      axisText(
         fmt(Math.abs(t) < s * 1e-8 ? 0 : t),
         vertical ? X(t) + 4 : 5,
         vertical ? Math.min(H - 5, Math.max(15, Y(0) + 16)) : Y(t) - 4
@@ -475,8 +487,9 @@ function draw() {
   ctx.moveTo(0, Y(0));
   ctx.lineTo(W, Y(0));
   ctx.stroke();
-  ctx.fillText('x', W - 14, Math.min(H - 8, Math.max(16, Y(0) - 8)));
-  ctx.fillText('y', Math.min(W - 16, Math.max(8, X(0) + 8)), 14);
+  axisText('x', W - 14, Math.min(H - 8, Math.max(16, Y(0) - 8)));
+  axisText('y', Math.min(W - 16, Math.max(8, X(0) + 8)), 14);
+  if (!model || !result) return;
   const curve = (lo, hi, color, width) => {
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
@@ -520,22 +533,32 @@ function draw() {
     }
     ctx.setLineDash([]);
   }
-  const point = (x, y, color, r, label) => {
+  const pointLabels = [];
+  const point = (x, y, color, r, label, arc = null) => {
     if (X(x) < -10 || X(x) > W + 10 || Y(y) < -10 || Y(y) > H + 10) return;
     ctx.beginPath();
-    ctx.arc(X(x), Y(y), r, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
+    if (!arc || arc.fill) {
+      ctx.arc(X(x), Y(y), r, 0, Math.PI * 2);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      ctx.beginPath();
+    }
+    ctx.arc(X(x), Y(y), r, arc ? arc.start : 0,
+      arc ? arc.end : Math.PI * 2);
     ctx.strokeStyle = color;
     ctx.lineWidth = 3;
     ctx.stroke();
+    occupied.push({ x: X(x) - r - 4, y: Y(y) - r - 4,
+      w: 2 * r + 8, h: 2 * r + 8 });
     if (label) {
-      ctx.fillStyle = color;
-      ctx.fillText(
-        label,
-        Math.min(W - 90, Math.max(5, X(x) + 10)),
-        Math.max(16, Y(y) - 12)
-      );
+      let group = pointLabels.find((item) =>
+        Math.hypot(item.x - X(x), item.y - Y(y)) < 2);
+      if (!group) {
+        group = { x: X(x), y: Y(y), parts: [] };
+        pointLabels.push(group);
+      }
+      if (!group.parts.some((part) => part.text === label))
+        group.parts.push({ text: label, color });
     }
   };
   if (result) {
@@ -553,10 +576,69 @@ function draw() {
     }
     for (const x of domain)
       point(x, E.evaluate(model.f, { ...scope, x }), '#226bd6', 4);
-    for (const x of result.maxX.slice(0, 50))
-      point(x, result.max, '#cc3f47', 8, '最大');
-    for (const x of result.minX.slice(0, 50))
-      point(x, result.min, '#087e60', 5, '最小');
+    const extremaRadius = 5;
+    const sharedExtremum = (x, others) =>
+      result.min === result.max && others.includes(x);
+    for (const x of result.maxX.slice(0, 50)) {
+      const arc = sharedExtremum(x, result.minX)
+        ? { start: Math.PI, end: Math.PI * 2, fill: true } : null;
+      point(x, result.max, '#cc3f47', extremaRadius, '最大', arc);
+    }
+    for (const x of result.minX.slice(0, 50)) {
+      const arc = sharedExtremum(x, result.maxX)
+        ? { start: 0, end: Math.PI, fill: false } : null;
+      point(x, result.min, '#087e60', extremaRadius, '最小', arc);
+    }
+  }
+  // Render annotations last. Merge coincident points, then avoid tick text,
+  // point markers and previously placed annotations using measured text widths.
+  for (const group of pointLabels) {
+    const separatorWidth = ctx.measureText('・').width;
+    const width = group.parts.reduce((sum, part) =>
+      sum + ctx.measureText(part.text).width, 0) +
+      separatorWidth * (group.parts.length - 1) + 12;
+    const height = 24;
+    const candidates = [];
+    for (const gap of [18, 36, 60, 90]) {
+      candidates.push(
+        { x: group.x + gap, y: group.y - height - gap },
+        { x: group.x - width - gap, y: group.y - height - gap },
+        { x: group.x + gap, y: group.y + gap },
+        { x: group.x - width - gap, y: group.y + gap },
+        { x: group.x - width / 2, y: group.y - height - gap },
+        { x: group.x - width / 2, y: group.y + gap }
+      );
+    }
+    let box;
+    for (const candidate of candidates) {
+      const possible = { ...candidate, w: width, h: height };
+      if (possible.x < 4 || possible.y < 4 ||
+          possible.x + width > W - 4 || possible.y + height > H - 4) continue;
+      if (!occupied.some((other) => overlaps(possible, other))) {
+        box = possible;
+        break;
+      }
+    }
+    if (!box) continue;
+    occupied.push(box);
+    ctx.strokeStyle = '#8b95a4';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(group.x, group.y);
+    ctx.lineTo(Math.max(box.x, Math.min(group.x, box.x + box.w)),
+      Math.max(box.y, Math.min(group.y, box.y + box.h)));
+    ctx.stroke();
+    let textX = box.x + 6;
+    group.parts.forEach((part, index) => {
+      if (index) {
+        ctx.fillStyle = '#607088';
+        ctx.fillText('・', textX, box.y + 16);
+        textX += separatorWidth;
+      }
+      ctx.fillStyle = part.color;
+      ctx.fillText(part.text, textX, box.y + 16);
+      textX += ctx.measureText(part.text).width;
+    });
   }
 }
 function zoom(factor) {
@@ -573,15 +655,24 @@ $('formulaForm').onsubmit = (e) => {
   apply();
 };
 $('preset').onchange = () => {
+  if (selectedPreset === 'E') {
+    freeFormula = ['formula', 'left', 'right'].map((id) => $(id).value);
+  }
+  selectedPreset = $('preset').value;
   const p = presets[$('preset').value];
-  if (p) {
-    ['formula', 'left', 'right'].forEach((id, i) => ($(id).value = p[i]));
-    scope = {};
-    configs = {};
-    apply();
-  } else $('formula').focus();
+  ['formula', 'left', 'right'].forEach((id, i) => {
+    $(id).value = (p || freeFormula)[i];
+  });
+  scope = {};
+  configs = {};
+  apply();
+  if (!p) $('formula').focus();
 };
+$('formula').addEventListener('input', () => {
+  if ($('preset').value === 'E' && !$('formula').value.trim()) clearFormula();
+});
 $('resetParams').onclick = () => {
+  if (!model) return;
   for (const n of model.names) scope[n] = configs[n].initial;
   buildParameters();
   update(false);

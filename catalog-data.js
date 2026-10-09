@@ -1,0 +1,43 @@
+// Public catalog only. Paths are relative to the repository root.
+// Add a material here to update both the entrance and subject pages.
+window.educationCatalog = {
+  subjects: [
+    {
+      id: 'math',
+      title: '数学',
+      description: 'グラフや式を動かしながら、数学のしくみを理解する。',
+      path: 'subjects/math/index.html',
+      materials: [
+        {
+          id: 'quadratic-max-min',
+          title: '2次関数の最大・最小',
+          category: '数学Ⅰ · 二次関数',
+          description: '頂点や定義域を動かして、最大・最小と場合分けを確かめよう。',
+          path: 'subjects/math/Quadratic_function/max_min.html',
+          tags: ['平方完成', 'パラメータ操作', '境界の比較']
+        }
+      ]
+    },
+    {
+      id: 'physics',
+      title: '物理',
+      description: '運動や力、エネルギーの関係を視覚的に学ぶ。',
+      path: 'subjects/physics/index.html',
+      materials: []
+    },
+    {
+      id: 'chemistry',
+      title: '化学',
+      description: '物質の性質や反応のしくみを理解する。',
+      path: 'subjects/chemistry/index.html',
+      materials: []
+    },
+    {
+      id: 'english',
+      title: '英語',
+      description: '言葉のしくみや使い方を学ぶ。',
+      path: 'subjects/english/index.html',
+      materials: []
+    }
+  ]
+};
