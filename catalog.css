@@ -1,9 +1,12 @@
+@import url('typography.css');
+
 :root {
   color-scheme: light;
-  font-family: 'Yu Gothic', Meiryo, system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-variant-numeric: lining-nums;
   color: #20324a;
   background: #f4f7fb;
-  line-height: 1.75;
+  line-height: var(--line-height-body);
 }
 * {
   box-sizing: border-box;
@@ -59,7 +62,7 @@ body {
   font-size: 13px;
   color: #63748b;
   margin-left: 20px;
-  font-weight: 500;
+  font-weight: 400;
 }
 main {
   max-width: 1168px;
@@ -175,7 +178,7 @@ h3 {
 }
 .description {
   color: #586b84;
-  font-size: 15px;
+  font-size: var(--font-size-body);
   margin: 0 0 20px;
 }
 .tags {

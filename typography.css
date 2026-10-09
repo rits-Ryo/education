@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap');
+
+:root {
+  /* To compare Noto Sans JP, load that family above and change this variable. */
+  --font-body: 'BIZ UDPGothic', 'BIZ UDPゴシック', Meiryo, sans-serif;
+  --font-size-body: 17px;
+  --font-weight-body: 400;
+  --font-weight-heading: 700;
+  --line-height-body: 1.8;
+}
+
+html {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-body);
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-heading);
+  line-height: 1.5;
+}
+
+button, input, select, textarea {
+  font-family: var(--font-body);
+}
+
+/* Math-renderer and code fonts are intentionally not overridden. */

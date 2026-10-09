@@ -442,7 +442,7 @@ function draw() {
       p = 10 ** Math.floor(Math.log10(raw));
     return (raw / p < 2 ? 1 : raw / p < 5 ? 2 : 5) * p;
   };
-  ctx.font = '12px system-ui';
+  ctx.font = '12px ' + getComputedStyle(canvas).fontFamily;
   ctx.lineWidth = 1;
   const occupied = [];
   const overlaps = (a, b) =>
@@ -771,4 +771,8 @@ $('graph').addEventListener(
   { passive: false }
 );
 new ResizeObserver(draw).observe($('graphWrap'));
+if (document.fonts) {
+  document.fonts.ready.then(draw);
+  document.fonts.addEventListener('loadingdone', draw);
+}
 apply();

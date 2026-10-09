@@ -15,6 +15,14 @@ window.educationCatalog = {
           description: '頂点や定義域を動かして、最大・最小と場合分けを確かめよう。',
           path: 'subjects/math/Quadratic_function/max_min.html',
           tags: ['平方完成', 'パラメータ操作', '境界の比較']
+        },
+        {
+          id: 'factoring-expansion-formulas',
+          title: '因数分解・展開の公式',
+          category: '数学Ⅰ・Ⅱ · 式の計算',
+          description: '基本公式から三乗・立方和と差まで、式の導出を確認しながら整理しよう。',
+          path: 'subjects/math/factoring_and_expansion_formulas/factoring_and_expansion_formulas.html',
+          tags: ['公式一覧', '導出の表示', '計算例']
         }
       ]
     },

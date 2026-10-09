@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>因数分解・展開の公式 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="factoring_and_expansion_formulas.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a>
+        /
+        <a href="../index.html">数学</a>
+        /
+        <span aria-current="page">因数分解・展開の公式</span>
+      </nav>
+      <section class="intro">
+        <p class="eyebrow">ALGEBRA FORMULAS</p>
+        <h1>因数分解・展開の公式</h1>
+        <p>因数分解・展開の公式は数学の基本。両方の向きの変形が完璧にできるようにしよう。</p>
+      </section>
+      <div class="reading-guide">
+        <p><strong>展開</strong>：積・累乗の形を、和・差の形にする。</p>
+        <p><strong>因数分解</strong>：和・差の形を、因数の積にする。</p>
+        <p>複雑な公式は「導出を見る」で途中の式を確認できます。</p>
+      </div>
+      <nav class="formula-nav" aria-label="公式の分類">
+        <a href="#basic">基本の公式</a>
+        <a href="#cubic">三乗・立方和と差</a>
+        <a href="#advanced">応用の公式</a>
+      </nav>
+      <section id="basic" class="formula-section" aria-labelledby="basic-heading">
+        <h2 id="basic-heading">基本の公式</h2>
+        <p class="section-note">共通因数と二次式の形を見つけよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 01</p>
+            <h3>共通因数でくくる</h3>
+            <div class="equation">
+              <span class="equation-term">ax+ay</span>
+              <div class="equation-chain">
+                <span class="equation-term">= a(x+y)</span>
+              </div>
+            </div>
+            <p class="note">すべての項に共通する因数を、括弧の外に出します。</p>
+            <p class="example"><span>例</span> 6x+9 = 3(2x+3)</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 02</p>
+            <h3>和の平方</h3>
+            <div class="equation">
+              <span class="equation-term">(a+b)<sup>2</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>2</sup>+2ab+b<sup>2</sup></span>
+              </div>
+            </div>
+            <p class="note">中央の項は2ab。a²+b²だけにはなりません。</p>
+            <p class="example"><span>例</span> (x+3)<sup>2</sup> = x<sup>2</sup>+6x+9</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 03</p>
+            <h3>差の平方</h3>
+            <div class="equation">
+              <span class="equation-term">(a−b)<sup>2</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>2</sup>−2ab+b<sup>2</sup></span>
+              </div>
+            </div>
+            <p class="note">中央の項は−2ab、最後のb²は正です。</p>
+            <p class="example"><span>例</span> (x−3)<sup>2</sup> = x<sup>2</sup>−6x+9</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 04</p>
+            <h3>平方の差</h3>
+            <div class="equation">
+              <span class="equation-term">(a+b)(a−b)</span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>2</sup>−b<sup>2</sup></span>
+              </div>
+            </div>
+            <p class="note">a²−b²は因数分解できます。a²+b²とは区別しましょう。</p>
+            <p class="example"><span>例</span> x<sup>2</sup>−16 = (x+4)(x−4)</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 05</p>
+            <h3>たすき掛け公式</h3>
+            <div class="equation">
+              <span class="equation-term">(x+a)(x+b)</span>
+              <div class="equation-chain">
+                <span class="equation-term">= x<sup>2</sup>+(a+b)x+ab</span>
+              </div>
+            </div>
+            <p class="note">因数分解では、和がxの係数、積が定数項になる2数を探します。</p>
+            <p class="example"><span>例</span> x<sup>2</sup>+5x+6 = (x+2)(x+3)</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 06</p>
+            <h3>係数がある一次式の積</h3>
+            <div class="equation">
+              <span class="equation-term">(ax+b)(cx+d)</span>
+              <div class="equation-chain">
+                <span class="equation-term">= acx<sup>2</sup>+(ad+bc)x+bd</span>
+              </div>
+            </div>
+            <p class="note">xの係数はad+bc。因数分解のたすき掛けの根拠になります。</p>
+            <p class="example"><span>例</span> 6x<sup>2</sup>+7x+2 = (2x+1)(3x+2)</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>分配法則で4つの積を作り、xの項をまとめます。</p>
+                  <div class="equation">
+                    <span class="equation-term">(ax+b)(cx+d)</span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= axcx+axd+bcx+bd</span>
+                      <span class="equation-term">= acx<sup>2</sup>+(ad+bc)x+bd</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <section id="cubic" class="formula-section" aria-labelledby="cubic-heading">
+        <h2 id="cubic-heading">三乗・立方和と差</h2>
+        <p class="section-note">三乗の展開と、立方和・立方差の因数分解を区別しよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 07</p>
+            <h3>和の三乗</h3>
+            <div class="equation">
+              <span class="equation-term">(a+b)<sup>3</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>3</sup>+3a<sup>2</sup>b+3ab<sup>2</sup>+b<sup>3</sup></span>
+              </div>
+            </div>
+            <p class="note">係数は1、3、3、1。aの次数は下がり、bの次数は上がります。</p>
+            <p class="example"><span>例</span> (x+2)<sup>3</sup> = x<sup>3</sup>+6x<sup>2</sup>+12x+8</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>まず平方の公式を使い、分配法則で展開します。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a+b)<sup>3</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= (a<sup>2</sup>+2ab+b<sup>2</sup>)(a+b)</span>
+                      <span class="equation-term">= a<sup>3</sup>+a<sup>2</sup>b+2a<sup>2</sup>b+2ab<sup>2</sup>+ab<sup>2</sup>+b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>同類項をまとめます。</p>
+                  <div class="equation">
+                    <span class="equation-term">a<sup>3</sup>+a<sup>2</sup>b+2a<sup>2</sup>b+2ab<sup>2</sup>+ab<sup>2</sup>+b<sup>3</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>+3a<sup>2</sup>b+3ab<sup>2</sup>+b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 08</p>
+            <h3>差の三乗</h3>
+            <div class="equation">
+              <span class="equation-term">(a−b)<sup>3</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>3</sup>−3a<sup>2</sup>b+3ab<sup>2</sup>−b<sup>3</sup></span>
+              </div>
+            </div>
+            <p class="note">符号は＋、−、＋、−と交互です。</p>
+            <p class="example"><span>例</span> (x−2)<sup>3</sup> = x<sup>3</sup>−6x<sup>2</sup>+12x−8</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>差の平方を使って展開します。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a−b)<sup>3</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= (a<sup>2</sup>−2ab+b<sup>2</sup>)(a−b)</span>
+                      <span class="equation-term">= a<sup>3</sup>−a<sup>2</sup>b−2a<sup>2</sup>b+2ab<sup>2</sup>+ab<sup>2</sup>−b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>同類項をまとめます。和の三乗でbを−bに置き換えても導けます。</p>
+                  <div class="equation">
+                    <span class="equation-term">a<sup>3</sup>−a<sup>2</sup>b−2a<sup>2</sup>b+2ab<sup>2</sup>+ab<sup>2</sup>−b<sup>3</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>−3a<sup>2</sup>b+3ab<sup>2</sup>−b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 09</p>
+            <h3>立方和の因数分解</h3>
+            <div class="equation">
+              <span class="equation-term">a<sup>3</sup>+b<sup>3</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= (a+b)(a<sup>2</sup>−ab+b<sup>2</sup>)</span>
+              </div>
+            </div>
+            <p class="note">外は和、括弧の中央は−abです。</p>
+            <p class="example"><span>例</span> x<sup>3</sup>+8 = (x+2)(x<sup>2</sup>−2x+4)</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>右辺を展開すると、a²bとab²の項が打ち消し合います。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a+b)(a<sup>2</sup>−ab+b<sup>2</sup>)</span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>−a<sup>2</sup>b+ab<sup>2</sup>+a<sup>2</sup>b−ab<sup>2</sup>+b<sup>3</sup></span>
+                      <span class="equation-term">= a<sup>3</sup>+b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 10</p>
+            <h3>立方差の因数分解</h3>
+            <div class="equation">
+              <span class="equation-term">a<sup>3</sup>−b<sup>3</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= (a−b)(a<sup>2</sup>+ab+b<sup>2</sup>)</span>
+              </div>
+            </div>
+            <p class="note">外は差、括弧の中央は＋abです。</p>
+            <p class="example"><span>例</span> x<sup>3</sup>−8 = (x−2)(x<sup>2</sup>+2x+4)</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>右辺を展開すると、中間の項が打ち消し合います。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a−b)(a<sup>2</sup>+ab+b<sup>2</sup>)</span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>+a<sup>2</sup>b+ab<sup>2</sup>−a<sup>2</sup>b−ab<sup>2</sup>−b<sup>3</sup></span>
+                      <span class="equation-term">= a<sup>3</sup>−b<sup>3</sup></span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <section id="advanced" class="formula-section" aria-labelledby="advanced-heading">
+        <h2 id="advanced-heading">応用の公式</h2>
+        <p class="section-note">まとまりを作る、項を足して引く。基本公式を組み合わせよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 11</p>
+            <h3>3項の平方</h3>
+            <div class="equation">
+              <span class="equation-term">(a+b+c)<sup>2</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>+2ab+2bc+2ca</span>
+              </div>
+            </div>
+            <p class="note">各項の平方に、異なる2項の積の2倍をすべて足します。</p>
+            <p class="example"><span>例</span> (x+y+1)<sup>2</sup> = x<sup>2</sup>+y<sup>2</sup>+1+2xy+2x+2y</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>a+bを1つのまとまりとして、和の平方を2回使います。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a+b+c)<sup>2</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= (a+b)<sup>2</sup>+2(a+b)c+c<sup>2</sup></span>
+                      <span class="equation-term">= a<sup>2</sup>+2ab+b<sup>2</sup>+2ac+2bc+c<sup>2</sup></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>項の順序を整理します。</p>
+                  <div class="equation">
+                    <span class="equation-term">a<sup>2</sup>+2ab+b<sup>2</sup>+2ac+2bc+c<sup>2</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>+2ab+2bc+2ca</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 12</p>
+            <h3>3つの立方と3abc</h3>
+            <div class="equation">
+              <span class="equation-term">a<sup>3</sup>+b<sup>3</sup>+c<sup>3</sup>−3abc</span>
+              <div class="equation-chain">
+                <span class="equation-term">= (a+b+c)(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)</span>
+              </div>
+            </div>
+            <p class="note">特にa+b+c=0なら、a³+b³+c³=3abcです。</p>
+            <p class="example"><span>例</span> a+b+c = 0 ⇒ a<sup>3</sup>+b<sup>3</sup>+c<sup>3</sup> = 3abc</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>3つの積に分けます。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a+b+c)(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)</span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)+b(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)+c(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>分配法則で展開します。</p>
+                  <div class="equation">
+                    <span class="equation-term">a(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)+b(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)+c(a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>−ab−bc−ca)</span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>+ab<sup>2</sup>+ac<sup>2</sup>−a<sup>2</sup>b−abc−a<sup>2</sup>c+a<sup>2</sup>b+b<sup>3</sup>+bc<sup>2</sup>−ab<sup>2</sup>−b<sup>2</sup>c−abc+a<sup>2</sup>c+b<sup>2</sup>c+c<sup>3</sup>−abc−bc<sup>2</sup>−ac<sup>2</sup></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>a²bなどの6種類の項が相殺され、−abcが3つ残ります。</p>
+                  <div class="equation">
+                    <span class="equation-term">a<sup>3</sup>+ab<sup>2</sup>+ac<sup>2</sup>−a<sup>2</sup>b−abc−a<sup>2</sup>c+a<sup>2</sup>b+b<sup>3</sup>+bc<sup>2</sup>−ab<sup>2</sup>−b<sup>2</sup>c−abc+a<sup>2</sup>c+b<sup>2</sup>c+c<sup>3</sup>−abc−bc<sup>2</sup>−ac<sup>2</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>3</sup>+b<sup>3</sup>+c<sup>3</sup>−3abc</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 13</p>
+            <h3>ソフィー・ジェルマンの恒等式</h3>
+            <div class="equation">
+              <span class="equation-term">a<sup>4</sup>+4b<sup>4</sup></span>
+              <div class="equation-chain">
+                <span class="equation-term">= (a<sup>2</sup>+2ab+2b<sup>2</sup>)(a<sup>2</sup>−2ab+2b<sup>2</sup>)</span>
+              </div>
+            </div>
+            <p class="note">一見くくれない和も、平方の差に変形して因数分解できます。</p>
+            <p class="example"><span>例</span> x<sup>4</sup>+4 = (x<sup>2</sup>+2x+2)(x<sup>2</sup>−2x+2)</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>4a²b²を足して引き、平方の差を作ります。</p>
+                  <div class="equation">
+                    <span class="equation-term">a<sup>4</sup>+4b<sup>4</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= a<sup>4</sup>+4a<sup>2</sup>b<sup>2</sup>+4b<sup>4</sup>−4a<sup>2</sup>b<sup>2</sup></span>
+                      <span class="equation-term">= (a<sup>2</sup>+2b<sup>2</sup>)<sup>2</sup>−(2ab)<sup>2</sup></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p>平方の差の公式を使い、括弧の中を整理します。</p>
+                  <div class="equation">
+                    <span class="equation-term">(a<sup>2</sup>+2b<sup>2</sup>)<sup>2</sup>−(2ab)<sup>2</sup></span>
+                    <div class="equation-chain">
+                      <span class="equation-term">= (a<sup>2</sup>+2b<sup>2</sup>+2ab)(a<sup>2</sup>+2b<sup>2</sup>−2ab)</span>
+                      <span class="equation-term">= (a<sup>2</sup>+2ab+2b<sup>2</sup>)(a<sup>2</sup>−2ab+2b<sup>2</sup>)</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <p class="device-note"><a href="../index.html">数学の教材一覧へ戻る</a></p>
+    </main>
+    <footer>
+      education · 因数分解・展開の公式
+    </footer>
+  </body>
+</html>

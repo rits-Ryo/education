@@ -1,5 +1,11 @@
 # education
 
+## 共通フォント
+
+本文のフォントは `typography.css` の `--font-body` で一元管理し、Google FontsからBIZ UDPGothicの400・700を読み込みます。本文の基本サイズは17px、ウェイト400、行間1.8、見出しは700です。補助ラベルは小さめのサイズを維持しています。数式専用のフォントとコードの等幅フォントは変更しません。
+
+Noto Sans JPと比較する場合は、同ファイルのGoogle FontsのURLに `family=Noto+Sans+JP:wght@400;700` を追加し、`--font-body` の先頭を `'Noto Sans JP'` に変更してください。Google Fontsに接続できない場合は指定した代替フォントで表示します。
+
 教科ごとのインタラクティブなWeb教材です。
 
 ## 公開ページと階層

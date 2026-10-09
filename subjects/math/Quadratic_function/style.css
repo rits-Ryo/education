@@ -1,8 +1,11 @@
+@import url('../../../typography.css');
+
 :root {
-  font-family: 'Yu Gothic', Meiryo, system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-variant-numeric: lining-nums;
   color: #20324a;
   background: #f1f5f9;
-  font-size: 16px;
+  font-size: var(--font-size-body);
   --blue: #226bd6;
   --red: #cc3f47;
   --green: #087e60;
@@ -68,7 +71,7 @@ h2:not(:first-child) {
 label {
   display: block;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 }
 input,
 select,
@@ -89,7 +92,7 @@ select {
 button {
   padding: 9px 13px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   touch-action: manipulation;
 }
 button:hover {
@@ -171,6 +174,7 @@ summary {
 }
 .graphHead {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
@@ -188,7 +192,7 @@ summary {
 }
 .math {
   padding: 18px 0;
-  font-family: Georgia, 'Yu Gothic', serif;
+  font-family: Arial, 'Helvetica Neue', 'Yu Gothic', Meiryo, sans-serif;
   font-size: 21px;
   overflow-wrap: anywhere;
   min-height: 84px;
@@ -264,7 +268,7 @@ canvas {
 }
 .results p {
   line-height: 1.8;
-  font-size: 14px;
+  font-size: var(--font-size-body);
 }
 .boundary {
   border: 1px solid #d9e2ee;
@@ -367,7 +371,7 @@ td {
   border-bottom: 1px solid #e5ebf2;
 }
 td:first-child {
-  font-family: Georgia, serif;
+  font-family: var(--font-body);
 }
 summary {
   min-height: 44px;
