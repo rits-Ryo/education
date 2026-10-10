@@ -13,7 +13,7 @@ Noto Sans JPと比較する場合は、同ファイルのGoogle FontsのURLに `
 <https://rits-ryo.github.io/education/> から、教科、教材の順に選びます。
 
 - エントランス：リポジトリ直下の index.html
-- 数学：subjects/math/index.html → 2次関数の最大・最小
+- 数学：subjects/math/index.html → 2次関数の最大・最小、因数分解・展開の公式、完全順列
 - 物理：subjects/physics/index.html（教材の追加予定）
 - 化学：subjects/chemistry/index.html（教材の追加予定）
 - 英語：subjects/english/index.html（教材の追加予定）
@@ -27,6 +27,7 @@ PC・iPadのブラウザで利用できます。GitHub Pagesの公開元は対�
 - catalog.css：入口・教科別ページの共通デザイン。
 - subjects/：教科別の一覧ページ。教材の計算や描画のコードは置きません。
 - subjects/math/Quadratic_function/：二次関数の最大・最小専用のHTML・CSS・JavaScript・テスト・操作説明。共通の一覧や別教材の実装は置きません。
+- subjects/math/derangement/：完全順列の公式・証明・例題と、小さい数での計算・列挙。
 
 教材本体は独立したフォルダーで管理します。入口・教科別一覧から教材へリンクし、教材の計算処理は共通カタログに依存しません。教材の説明は [2次関数の最大・最小のREADME](subjects/math/Quadratic_function/README.md) を参照してください。
 

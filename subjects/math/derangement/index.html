@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>完全順列 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="derangement.css" />
+    <script defer src="derangement.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a> /
+        <a href="../index.html">数学</a> /
+        <span aria-current="page">完全順列</span>
+      </nav>
+
+      <section class="intro">
+        <p class="eyebrow">DERANGEMENT</p>
+        <h1>完全順列</h1>
+        <p>「全員が元と違う位置にいる」並べ方を、数え方から理解しよう。</p>
+      </section>
+
+      <nav class="lesson-nav" aria-label="このページの内容">
+        <a href="#definition">定義</a>
+        <a href="#formulas">公式</a>
+        <a href="#proofs">証明</a>
+        <a href="#explore">数えてみる</a>
+        <a href="#problems">例題</a>
+      </nav>
+
+      <section id="definition" class="lesson">
+        <h2>1. 完全順列とは</h2>
+        <p>区別できる n 個のものを並べ替えたとき、どのものも元の位置にない順列を<strong>完全順列</strong>といいます。その個数を D<sub>n</sub> と書きます。</p>
+        <p class="math">すべての i に対して、σ(i) ≠ i</p>
+        <p>元の並びが「1・2・3」のとき、完全順列は「2・3・1」と「3・1・2」の2通りです。「2・1・3」は3が元の位置に残るため、完全順列ではありません。</p>
+        <div class="callout">
+          <strong>問題を見分けるポイント</strong>
+          <p>「全員が自分以外の帽子を取る」「どの手紙も正しい封筒に入らない」など、各人・各物に対応する位置が1つずつある場面です。単に「並び全体が元と違う」という条件とは異なります。</p>
+        </div>
+      </section>
+
+      <section id="formulas" class="lesson">
+        <h2>2. 完全順列の公式</h2>
+        <h3>包除原理による公式</h3>
+        <div class="math equation">
+          <span>D<sub>n</sub></span>
+          <div class="equation-chain">
+            <span>= n! ∑<sub>k=0</sub><sup>n</sup> (−1)<sup>k</sup> / k!</span>
+            <span>= n! {1 − 1/1! + 1/2! − 1/3! + ⋯ + (−1)<sup>n</sup>/n!}</span>
+          </div>
+        </div>
+        <p>n は0以上の整数です。0! = 1 とし、D<sub>0</sub> = 1 と定めます。0個を並べる方法は「何も並べない」1通りと考えます。D<sub>1</sub> = 0 です。</p>
+        <h3>前の値から求める漸化式</h3>
+        <p class="math">D<sub>n</sub> = (n − 1)(D<sub>n−1</sub> + D<sub>n−2</sub>)　(n ≧ 2)</p>
+        <p>初期値 D<sub>0</sub> = 1、D<sub>1</sub> = 0 から順に計算できます。</p>
+        <h3>確率と近似</h3>
+        <p class="math">全員が元と違う位置になる確率 = D<sub>n</sub> / n!</p>
+        <p>すべての n! 通りを同じ確率で選ぶときの式です。n が大きくなると、この確率は 1/e ≈ 0.367879 に近づきます。1/e は近似・極限値であり、有限の n に対する確率は D<sub>n</sub>/n! です。</p>
+      </section>
+
+      <section id="proofs" class="lesson">
+        <h2>3. 公式を証明する</h2>
+        <details>
+          <summary>包除原理による証明を開く</summary>
+          <ol class="steps">
+            <li>
+              <h3>元の位置に残る順列を考える</h3>
+              <p>A<sub>i</sub> を「i が元の位置にある順列」の集合とします。求めたいのは、A<sub>1</sub>, …, A<sub>n</sub> のどれにも属さない順列の数です。</p>
+            </li>
+            <li>
+              <h3>k 個の位置を固定する</h3>
+              <p>指定した k 個を元の位置に固定すると、残りの n − k 個は自由に並べられるので (n − k)! 通りです。固定する k 個の選び方は <sub>n</sub>C<sub>k</sub> 通りあります。</p>
+              <p>ここでは「指定した k 個が固定」という条件です。残りのものが元の位置にあることも許しています。</p>
+            </li>
+            <li>
+              <h3>引きすぎを戻す</h3>
+              <p>全体から1個を固定する順列を引き、2個を固定する順列を足し、3個を固定する順列を引く、と交互に補正します。</p>
+              <div class="math equation">
+                <span>D<sub>n</sub></span>
+                <div class="equation-chain">
+                  <span>= ∑<sub>k=0</sub><sup>n</sup> (−1)<sup>k</sup> <sub>n</sub>C<sub>k</sub> (n − k)!</span>
+                  <span>= ∑<sub>k=0</sub><sup>n</sup> (−1)<sup>k</sup> n! / k!</span>
+                  <span>= n! ∑<sub>k=0</sub><sup>n</sup> (−1)<sup>k</sup> / k!</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <h3>なぜ正しく数えられる？</h3>
+              <p>元の位置に残るものが r 個ある順列は、補正後に ∑<sub>k=0</sub><sup>r</sup> (−1)<sup>k</sup> <sub>r</sub>C<sub>k</sub> = (1 − 1)<sup>r</sup> 回数えられます。r ≧ 1 なら0回です。r = 0 の順列だけが1回残るため、完全順列だけを数えられます。</p>
+            </li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>漸化式の証明を開く</summary>
+          <ol class="steps">
+            <li>
+              <h3>1が移る先を決める</h3>
+              <p>σ(1) = j とします。j ≠ 1 なので、j の選び方は n − 1 通りあります。</p>
+            </li>
+            <li>
+              <h3>場合①：1とjが交換する</h3>
+              <p>σ(j) = 1 の場合、1とjは互いの位置へ移ります。この2個を除いた残りは完全順列なので、D<sub>n−2</sub> 通りです。</p>
+            </li>
+            <li>
+              <h3>場合②：1とjが交換しない</h3>
+              <p>σ(j) ≠ 1 の場合、σ(k) = 1 となる k は j と異なります。「k → 1 → j」という対応から1を除き、「k → j」に置き換えます。k ≠ j なので新しい固定点は生じず、残り n − 1 個の完全順列になります。</p>
+              <p>逆に、残りの完全順列で j に向かう対応「k → j」の途中に1を入れれば元に戻ります。したがって、この場合は D<sub>n−1</sub> 通りです。</p>
+            </li>
+            <li>
+              <h3>2つの場合を合わせる</h3>
+              <p class="math">D<sub>n</sub> = (n − 1)(D<sub>n−2</sub> + D<sub>n−1</sub>)</p>
+              <p>2つの場合は重ならず、σ(1) の選び方 n − 1 通りを掛けます。</p>
+            </li>
+          </ol>
+        </details>
+      </section>
+
+      <section id="explore" class="lesson">
+        <h2>4. 小さい数で数えてみる</h2>
+        <p>n を選ぶと、完全順列の個数と確率を計算します。n ≦ 5 のときは、すべての完全順列も表示します。並びの i 番目に i がないことを確かめましょう。</p>
+        <label for="size">ものの個数 n</label>
+        <select id="size">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <div id="calculation" class="callout" aria-live="polite"></div>
+        <div id="arrangements" class="arrangements" aria-label="完全順列の一覧"></div>
+        <noscript><p>計算表示にはJavaScriptを有効にしてください。公式・証明・例題はそのまま読めます。</p></noscript>
+        <div class="table-scroll">
+          <table>
+            <caption>完全順列の個数</caption>
+            <thead>
+              <tr>
+                <th scope="col">n</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">2</th>
+                <th scope="col">3</th>
+                <th scope="col">4</th>
+                <th scope="col">5</th>
+                <th scope="col">6</th>
+                <th scope="col">7</th>
+                <th scope="col">8</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">D<sub>n</sub></th>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>9</td>
+                <td>44</td>
+                <td>265</td>
+                <td>1854</td>
+                <td>14833</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="problems" class="lesson">
+        <h2>5. 具体的な問題</h2>
+        <article class="problem">
+          <h3>例題1：手紙と封筒</h3>
+          <p>4人それぞれへの手紙と、その人宛ての封筒が1つずつあります。どの手紙も正しい封筒に入らない入れ方は何通りですか？</p>
+          <details>
+            <summary>解答・解説を見る</summary>
+            <p>各手紙に対応する封筒があり、すべて対応先を避けるので D<sub>4</sub> を求めます。</p>
+            <p class="math">D<sub>4</sub> = 24 − 24 + 12 − 4 + 1 = 9</p>
+            <p><strong>答え：9通り。</strong></p>
+          </details>
+        </article>
+        <article class="problem">
+          <h3>例題2：全員が違う帽子を取る確率</h3>
+          <p>5人が自分の帽子を1つずつ出し、ランダムに1つずつ取ります。全員が自分以外の帽子を取る確率を求めてください。すべての割り当ては同様に確からしいとします。</p>
+          <details>
+            <summary>解答・解説を見る</summary>
+            <p>全体は 5! = 120 通り、条件を満たす割り当ては D<sub>5</sub> = 44 通りです。</p>
+            <p class="math">44 / 120 = 11 / 30</p>
+            <p><strong>答え：11/30。</strong>人ごとの出来事は独立ではないので、(4/5)<sup>5</sup> では求められません。</p>
+          </details>
+        </article>
+        <article class="problem">
+          <h3>例題3：ちょうど1人が元の席に座る</h3>
+          <p>5人が、番号付きの5席へ座り直します。ちょうど1人だけが元の席に座る並べ方は何通りですか？</p>
+          <details>
+            <summary>解答・解説を見る</summary>
+            <p>元の席に座る1人を5通りから選びます。残り4人は、誰も元の席に座らない完全順列でなければなりません。</p>
+            <p class="math">5 × D<sub>4</sub> = 5 × 9 = 45</p>
+            <p><strong>答え：45通り。</strong>「少なくとも1人」と「ちょうど1人」を区別します。</p>
+          </details>
+        </article>
+        <article class="problem">
+          <h3>例題4：少なくとも1人が元の席に座る</h3>
+          <p>4人が、番号付きの4席へ座り直します。少なくとも1人が元の席に座る並べ方は何通りですか？</p>
+          <details>
+            <summary>解答・解説を見る</summary>
+            <p>余事象「誰も元の席に座らない」を全体から引きます。</p>
+            <p class="math">4! − D<sub>4</sub> = 24 − 9 = 15</p>
+            <p><strong>答え：15通り。</strong></p>
+          </details>
+        </article>
+        <div class="callout">
+          <strong>発展：ちょうど r 個が元の位置にある</strong>
+          <p class="math"><sub>n</sub>C<sub>r</sub> D<sub>n−r</sub>　(0 ≦ r ≦ n)</p>
+          <p>固定する r 個を選び、残りを完全順列にします。n − 1 個だけを固定することはできません。残り1個も元の位置になってしまうため、D<sub>1</sub> = 0 となります。</p>
+        </div>
+      </section>
+      <p class="device-note">参考：<a href="https://www.math.hkust.edu.hk/~mabfchen/Math3343/Inclusion-Exclusion.pdf">香港科技大学の包除原理の講義資料（英語・PDF）</a></p>
+      <p class="device-note"><a href="../index.html">数学の教材一覧へ戻る</a></p>
+    </main>
+    <footer>education · 完全順列</footer>
+  </body>
+</html>

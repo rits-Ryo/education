@@ -1,0 +1,143 @@
+/* ページの区切りと、タブレットでも押しやすい操作領域。 */
+.lesson-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.lesson-nav a,
+summary {
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem;
+  background: #edf3fc;
+}
+
+.lesson {
+  margin-bottom: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #d5dfed;
+  border-radius: 1rem;
+  background: #fff;
+  scroll-margin-top: 1rem;
+}
+
+.lesson h2 {
+  margin-top: 0;
+}
+.lesson h3 {
+  margin-top: 1.4rem;
+}
+
+.callout {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 4px solid #3669ac;
+  background: #f0f5fc;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+details {
+  margin: 1rem 0;
+}
+summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+summary:focus-visible,
+.lesson-nav a:focus-visible {
+  outline: 3px solid #3669ac;
+  outline-offset: 3px;
+}
+.steps {
+  padding-left: 1.5rem;
+}
+.steps li {
+  padding-left: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.problem + .problem {
+  margin-top: 2rem;
+  border-top: 1px solid #d5dfed;
+}
+
+/* 等号は同じ列に置く。長い数式はページ全体ではなく式の中でスクロール。 */
+.math {
+  font-size: 1.12rem;
+  overflow-x: auto;
+  padding-bottom: 0.3rem;
+}
+
+.equation {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.4em;
+}
+
+.equation-chain {
+  display: grid;
+  min-width: 0;
+}
+.equation-chain span {
+  white-space: nowrap;
+}
+
+select {
+  min-height: 48px;
+  min-width: 90px;
+  margin-left: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid #a7bad3;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.arrangements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.arrangement {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #b5c9e5;
+  border-radius: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+caption {
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+th, td {
+  padding: 0.7rem;
+  text-align: center;
+  border: 1px solid #d5dfed;
+}
+th {
+  background: #edf3fc;
+}
+
+@media (max-width: 600px) {
+  .lesson {
+    padding: 1rem;
+  }
+  .math {
+    font-size: 1rem;
+  }
+  .steps {
+    padding-left: 1.2rem;
+  }
+}

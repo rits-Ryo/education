@@ -23,6 +23,14 @@ window.educationCatalog = {
           description: '基本公式から三乗・立方和と差まで、式の導出を確認しながら整理しよう。',
           path: 'subjects/math/factoring_and_expansion_formulas/factoring_and_expansion_formulas.html',
           tags: ['公式一覧', '導出の表示', '計算例']
+        },
+        {
+          id: 'derangement',
+          title: '完全順列',
+          category: '数学A · 場合の数',
+          description: '公式の証明と具体例から、全員が元と違う位置にいる並べ方を数えよう。',
+          path: 'subjects/math/derangement/index.html',
+          tags: ['包除原理', '漸化式', '例題と解説']
         }
       ]
     },
