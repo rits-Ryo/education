@@ -1,0 +1,133 @@
+.chapter-nav,
+.controls,
+.angle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.chapter-nav a,
+button {
+  padding: 0.65rem 1rem;
+  border: 1px solid #b2c5dd;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: #20324a;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #edf4ff;
+}
+
+:focus-visible {
+  outline: 3px solid #226bd6;
+  outline-offset: 3px;
+}
+
+.lesson {
+  background: #fff;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #dbe4ef;
+  border-radius: 1rem;
+  margin: 1.5rem 0;
+  scroll-margin-top: 1rem;
+}
+
+.lesson h2 {
+  font-size: 1.4rem;
+}
+
+.visual-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.graph-pair {
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: #f8fbff;
+  border-radius: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+#circle {
+  touch-action: none;
+}
+
+#arc-circle {
+  max-width: 440px;
+  margin: auto;
+}
+
+.point-handle {
+  cursor: grab;
+}
+
+.formula {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.callout {
+  padding: 1rem;
+  border-left: 4px solid #7253b0;
+  background: #f2f5fc;
+}
+
+.caption {
+  color: #586b84;
+  font-size: 0.9rem;
+}
+
+.sin-color { color: #b32948; }
+.cos-color { color: #17609c; }
+.tan-color { color: #946400; }
+
+label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+input,
+select {
+  min-height: 44px;
+  border: 1px solid #a9bbd2;
+  border-radius: 0.4rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+  max-width: 100%;
+}
+
+input[type='number'] { width: 8rem; }
+input[type='range'] { flex: 1; min-width: 120px; accent-color: #7253b0; }
+input[type='checkbox'] { width: 22px; min-height: 22px; }
+.wide { flex: 1 1 350px; }
+.coefficient-controls { display: grid; gap: 0.8rem; }
+.coefficient-controls label { display: grid; grid-template-columns: 1rem minmax(120px, 1fr) 7rem; }
+#input-error,
+#coefficient-error { color: #a12437; min-height: 1em; }
+
+@media (max-width: 800px) {
+  .visual-pair,
+  .graph-pair { grid-template-columns: minmax(0, 1fr); }
+  .visual-pair > svg,
+  #circle { max-width: 460px; margin: auto; }
+  .graph-pair > #graph { max-width: none; }
+  main { padding: 0 12px; }
+}

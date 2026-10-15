@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>定積分と面積・区分求積法 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../../vendor/katex-0.19.0/katex.min.css">
+    <link rel="stylesheet" href="../../../math-display.css">
+    <script defer src="../../../vendor/katex-0.19.0/katex.min.js"></script>
+    <script defer src="../../../vendor/katex-0.19.0/auto-render.min.js"></script>
+    <script defer src="../../../math-display.js"></script>
+    <script defer src="../../../number-format.js"></script>
+    <script defer src="engine.js"></script>
+    <script defer src="drawing.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a> / <a href="../index.html">数学</a> / 定積分と面積
+      </nav>
+      <section class="intro">
+        <h1>定積分と面積・区分求積法</h1>
+        <p>曲線で囲まれた領域を長方形で近似し、その和の極限と定積分を結びます。</p>
+      </section>
+      <nav class="chapter-nav" aria-label="章一覧">
+        <a href="#area">1 定積分と面積</a>
+        <a href="#rectangles">2 長方形の近似</a>
+        <a href="#sigma">3 Σと極限</a>
+        <a href="#example">4 <span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>の具体例</a>
+        <a href="#functions">5 関数と区間</a>
+        <a href="#primitive">6 原始関数</a>
+      </nav>
+
+      <section id="area" class="lesson">
+        <h2>1. 定積分と面積</h2>
+        <p>区間[<span class="math-inline" data-latex="a, b">\(a, b\)</span>]で<span class="math-inline" data-latex="f(x) \ge  0">\(f(x) \ge  0\)</span>のとき、曲線<span class="math-inline" data-latex="y = f(x)">\(y = f(x)\)</span>、<span class="math-inline" data-latex="x">\(x\)</span>軸、2本の直線<span class="math-inline" data-latex="x = a">\(x = a\)</span>、<span class="math-inline" data-latex="x = b">\(x = b\)</span>で囲まれた部分の面積は定積分で表せます。初期の<span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>、[0, 2]ではその面積は<span class="math-inline" data-latex="\frac{8}{3}">\(\frac{8}{3}\)</span>です。</p>
+        <p class="formula math-block" data-latex="\int_0^2x^2\,dx=\frac83" data-display="true">\[\int_0^2x^2\,dx=\frac83\]</p>
+        <div class="workspace">
+          <div>
+            <svg id="area-graph" viewBox="0 0 720 460" role="img" aria-label="定積分の正と負の領域"></svg>
+            <p class="caption">境界線の上の<span class="math-inline" data-latex="a">\(a\)</span>・<span class="math-inline" data-latex="b">\(b\)</span>の丸いハンドルをドラッグできます。</p>
+          </div>
+          <div class="panel">
+            <label>面積図の関数 <select id="area-function"></select></label>
+            <div id="area-endpoints" class="endpoint-controls"></div>
+            <p id="area-error" role="status"></p>
+            <p id="area-formula" class="formula"></p>
+            <p id="area-values" class="callout"></p>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="positive-key">上側：正の寄与（青）</span>
+          <span class="negative-key">下側：負の寄与（赤・斜線）</span>
+        </div>
+        <p>定積分はいつも通常の面積と等しいわけではありません。<span class="math-inline" data-latex="x">\(x\)</span>軸より上の部分は正、下の部分は負として加えます。下側の部分の面積を<span class="math-inline" data-latex="N">\(N\)</span>、上側を<span class="math-inline" data-latex="P">\(P\)</span>とすると、<strong>定積分は<span class="math-inline" data-latex="P - N">\(P - N\)</span>、幾何学的な面積は<span class="math-inline" data-latex="P + N">\(P + N\)</span></strong>です。幾何学的な面積は負にはなりません。</p>
+        <p><span class="math-inline" data-latex="f">\(f\)</span>の符号が変わる場合、<span class="math-inline" data-latex="x">\(x\)</span>軸との交点で区間を分け、各部分の定積分の絶対値を加えると通常の面積になります。たとえば<span class="math-inline" data-latex="x^{2} - 1">\(x^{2} - 1\)</span>の[−2, 2]では、−1と1で区間を分けます。</p>
+      </section>
+
+      <section id="rectangles" class="lesson">
+        <h2>2. 長方形で曲線の領域を近似する</h2>
+        <p>初期例は<span class="math-inline" data-latex="f(x) = x^{2}">\(f(x) = x^{2}\)</span>、[0, 1]、<span class="math-inline" data-latex="n = 4">\(n = 4\)</span>です。区間を<span class="math-inline" data-latex="n">\(n\)</span>等分し、各小区間の<strong>右端の関数値</strong>を長方形の高さにします。<span class="math-inline" data-latex="n">\(n\)</span>を増やすと幅が小さくなり、長方形の形が曲線に近づきます。</p>
+        <div class="workspace">
+          <div>
+            <svg id="sum-graph" viewBox="0 0 720 460" role="img" aria-label="曲線の領域と右端の高さを使う長方形"></svg>
+            <p class="caption">紫の輪郭が長方形、紺の実線が曲線です。赤い長方形の寄与は負です。境界線<span class="math-inline" data-latex="a">\(a\)</span>・<span class="math-inline" data-latex="b">\(b\)</span>はドラッグできます。</p>
+          </div>
+          <div class="panel">
+            <label>近似図の関数 <select id="function"></select></label>
+            <div id="sum-endpoints" class="endpoint-controls"></div>
+            <div class="count-control">
+              <label for="n-slider">分割数<span class="math-inline" data-latex="n">\(n\)</span></label>
+              <input id="n-slider" type="range" min="1" max="200" step="1" value="4" />
+              <input id="n-number" aria-label="nの数値" type="number" min="1" max="200" step="1" value="4" />
+            </div>
+            <div class="n-buttons" aria-label="分割数の代表値">
+              <button type="button" data-n="1">1</button>
+              <button type="button" data-n="2">2</button>
+              <button type="button" data-n="4">4</button>
+              <button type="button" data-n="10">10</button>
+              <button type="button" data-n="20">20</button>
+              <button type="button" data-n="50">50</button>
+              <button type="button" data-n="100">100</button>
+              <button type="button" data-n="200">200</button>
+            </div>
+            <label>表示モード
+              <select id="mode">
+                <option value="compare">曲線と長方形の比較</option>
+                <option value="curve">曲線のみ</option>
+                <option value="rectangles">長方形による近似</option>
+              </select>
+            </label>
+            <p id="sum-error" role="status"></p>
+            <dl id="sum-values" class="readings"></dl>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="play" type="button">nを増やして再生</button>
+          <button id="reset" type="button">nを4に戻す</button>
+          <label>再生速度
+            <select id="speed"><option value="2000">2秒ごと</option><option value="1000" selected>1秒ごと</option><option value="500">0.5秒ごと</option></select>
+          </label>
+        </div>
+        <p>長方形が<span class="math-inline" data-latex="x">\(x\)</span>軸より下にあるときは、その高さ<span class="math-inline" data-latex="f(x_{k})">\(f(x_{k})\)</span>を負として計算します。したがって<span class="math-inline" data-latex="S_{n}">\(S_{n}\)</span>は<strong>符号付きの和</strong>です。各長方形の幾何学的な面積を単純に足したものではありません。</p>
+        <p>比較モードでは薄い色の曲線領域と半透明の長方形を重ねます。輪郭のずれが近似のずれです。表示した|<span class="math-inline" data-latex="S_{n} - I|">\(S_{n} - I|\)</span>は符号付きの和の差であり、図のはみ出し・不足の面積の合計とは限りません。</p>
+      </section>
+
+      <section id="sigma" class="lesson">
+        <h2>3. 長方形の和をΣと極限で表す</h2>
+        <ol class="steps">
+          <li><h3>区間を<span class="math-inline" data-latex="n">\(n\)</span>等分する</h3><p class="formula math-block" data-latex="\Delta x=\frac{b-a}n" data-display="true">\[\Delta x=\frac{b-a}n\]</p><p><span class="math-inline" data-latex="n">\(n\)</span>は正の整数です。<span class="math-inline" data-latex="a">\(a\)</span> &lt; <span class="math-inline" data-latex="b">\(b\)</span>のとき、各長方形の幅<span class="math-inline" data-latex="\Delta x">\(\Delta x\)</span>は正になります。</p></li>
+          <li><h3>右端を高さに使う</h3><p class="formula math-block" data-latex="x_k=a+k\Delta x\quad(k=1,2,\ldots,n)" data-display="true">\[x_k=a+k\Delta x\quad(k=1,2,\ldots,n)\]</p><p><span class="math-inline" data-latex="k">\(k\)</span>番目の長方形の符号付き面積は<span class="math-inline" data-latex="f(x_{k})\Delta x">\(f(x_{k})\Delta x\)</span>です。</p></li>
+          <li><h3>すべての長方形を足す</h3><p class="formula math-block" data-latex="S_n=\sum_{k=1}^nf\left(a+\frac{k(b-a)}n\right)\frac{b-a}n" data-display="true">\[S_n=\sum_{k=1}^nf\left(a+\frac{k(b-a)}n\right)\frac{b-a}n\]</p><p>Σは、<span class="math-inline" data-latex="k = 1">\(k = 1\)</span>から<span class="math-inline" data-latex="n">\(n\)</span>までの各項を足す記号です。</p></li>
+          <li><h3><span class="math-inline" data-latex="n">\(n\)</span>を限りなく大きくする</h3><p><span class="math-inline" data-latex="f">\(f\)</span>が[<span class="math-inline" data-latex="a, b">\(a, b\)</span>]で連続なら、<span class="math-inline" data-latex="n">\(n\)</span>を大きくして<span class="math-inline" data-latex="\Delta x">\(\Delta x\)</span>を0に近づけると、この和は定積分に近づきます。有限の<span class="math-inline" data-latex="n">\(n\)</span>での<span class="math-inline" data-latex="S_{n}">\(S_{n}\)</span>と、その極限値は区別します。</p><p class="formula math-block" data-latex="\lim_{n\to\infty}S_n=\int_a^bf(x)\,dx" data-display="true">\[\lim_{n\to\infty}S_n=\int_a^bf(x)\,dx\]</p></li>
+        </ol>
+        <p>特に[0, 1]では<span class="math-inline" data-latex="\Delta x = \frac{1}{n}">\(\Delta x = \frac{1}{n}\)</span>、<span class="math-inline" data-latex="x_{k} = \frac{k}{n}">\(x_{k} = \frac{k}{n}\)</span>となります。</p>
+        <p class="formula math-block" data-latex="\lim_{n\to\infty}\frac1n\sum_{k=1}^nf\left(\frac kn\right)=\int_0^1f(x)\,dx" data-display="true">\[\lim_{n\to\infty}\frac1n\sum_{k=1}^nf\left(\frac kn\right)=\int_0^1f(x)\,dx\]</p>
+        <p class="caption">ここでは[0, 1]上で連続な関数に対する、等分・右端の高さによる高校数学の区分求積法を扱います。</p>
+        <p id="current-sigma" class="callout"></p>
+      </section>
+
+      <section id="example" class="lesson">
+        <h2>4. <span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>の[0, 1]を式で求める</h2>
+        <p><span class="math-inline" data-latex="k">\(k\)</span>番目の長方形の高さは(<span class="math-inline" data-latex="\frac{k}{n})^{2}">\(\frac{k}{n})^{2}\)</span>、幅は<span class="math-inline" data-latex="\frac{1}{n}">\(\frac{1}{n}\)</span>です。第2章の<span class="math-inline" data-latex="n">\(n\)</span>と同じ分割数を使って、この具体例の数値も更新します。</p>
+        <div class="equation formula math-block" data-latex="\begin{aligned}S_n&amp;=\frac1n\sum_{k=1}^n\left(\frac kn\right)^2\\&amp;=\frac1{n^3}\sum_{k=1}^nk^2\\&amp;=\frac1{n^3}\frac{n(n+1)(2n+1)}6\\&amp;=\frac{(n+1)(2n+1)}{6n^2}\\&amp;=\frac13+\frac1{2n}+\frac1{6n^2}\end{aligned}" data-display="true">\[\begin{aligned}S_n&amp;=\frac1n\sum_{k=1}^n\left(\frac kn\right)^2\\&amp;=\frac1{n^3}\sum_{k=1}^nk^2\\&amp;=\frac1{n^3}\frac{n(n+1)(2n+1)}6\\&amp;=\frac{(n+1)(2n+1)}{6n^2}\\&amp;=\frac13+\frac1{2n}+\frac1{6n^2}\end{aligned}\]</div>
+        <p>平方の和の公式 ∑<span class="math-inline" data-latex="k^{2} = n(n + 1)\frac{2n + 1}{6}">\(k^{2} = n(n + 1)\frac{2n + 1}{6}\)</span> を使いました。最後の式で<span class="math-inline" data-latex="n">\(n\)</span> → ∞とすると、<span class="math-inline" data-latex="\frac{1}{2n}">\(\frac{1}{2n}\)</span>と<span class="math-inline" data-latex="\frac{1}{6n^{2}}">\(\frac{1}{6n^{2}}\)</span>は0に近づきます。</p>
+        <p class="formula math-block" data-latex="\lim_{n\to\infty}S_n=\frac13=\int_0^1x^2\,dx" data-display="true">\[\lim_{n\to\infty}S_n=\frac13=\int_0^1x^2\,dx\]</p>
+        <p id="square-example" class="callout"></p>
+        <p>この例では、<span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>が[0, 1]で増加するため、右端の高さを使う長方形は曲線の領域を上から近似します。誤差<span class="math-inline" data-latex="\frac{1}{2n} + \frac{1}{6n^{2}}">\(\frac{1}{2n} + \frac{1}{6n^{2}}\)</span>は<span class="math-inline" data-latex="n">\(n\)</span>とともに減ります。しかし一般の関数で、分割数を増やすたびに近似値が必ず同じ側から単調に近づくとは限りません。</p>
+      </section>
+
+      <section id="functions" class="lesson">
+        <h2>5. 関数と積分区間の変更</h2>
+        <p>第2章の操作パネルで7種類の関数と区間を変更できます。どの関数も連続で、右端の高さを使う規則は共通です。第1章の面積図は独立して操作できるので、別の区間と比較できます。</p>
+        <p><span class="math-inline" data-latex="\sin  x">\(\sin  x\)</span>の初期区間は[0, <span class="math-inline" data-latex="\pi ">\(\pi \)</span>]で、角度は<span class="math-inline" data-latex="rad">\(rad\)</span>です。<span class="math-inline" data-latex="x^{3}">\(x^{3}\)</span>の[−1, 1]では正負の寄与が相殺されて定積分は0になりますが、幾何学的な面積は0ではありません。<span class="math-inline" data-latex="x^{2} - 1">\(x^{2} - 1\)</span>では、−1と1を境に符号が変わります。</p>
+        <p class="callout">この教材では<span class="math-inline" data-latex="a \le  b">\(a \le  b\)</span>に制限します。<span class="math-inline" data-latex="a = b">\(a = b\)</span>なら幅・定積分・長方形の和はいずれも0です。数値入力で<span class="math-inline" data-latex="a">\(a\)</span> &gt; <span class="math-inline" data-latex="b">\(b\)</span>にすると警告し、最後の有効な区間の図を維持します。境界線のドラッグとスライダーはもう一方の端で止まります。</p>
+      </section>
+
+      <section id="primitive" class="lesson">
+        <h2>6. 原始関数を用いた計算との関係</h2>
+        <p><span class="math-inline" data-latex="F&#x27;(x) = f(x)">\(F&#x27;(x) = f(x)\)</span>となる関数<span class="math-inline" data-latex="F">\(F\)</span>を、<span class="math-inline" data-latex="f">\(f\)</span>の原始関数といいます。<span class="math-inline" data-latex="f">\(f\)</span>が区間で連続で、<span class="math-inline" data-latex="F">\(F\)</span>がその原始関数なら、定積分は両端での<span class="math-inline" data-latex="F">\(F\)</span>の値の差で計算できます。</p>
+        <p class="formula math-block" data-latex="\int_a^bf(x)\,dx=F(b)-F(a)" data-display="true">\[\int_a^bf(x)\,dx=F(b)-F(a)\]</p>
+        <p class="formula math-block" data-latex="\int_0^1x^2\,dx=\left[\frac{x^3}3\right]_0^1=\frac13-0=\frac13" data-display="true">\[\int_0^1x^2\,dx=\left[\frac{x^3}3\right]_0^1=\frac13-0=\frac13\]</p>
+        <p><span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>の[0, 1]では、曲線と<span class="math-inline" data-latex="x">\(x\)</span>軸で囲まれた面積、長方形の和の極限、原始関数による計算が、すべて<span class="math-inline" data-latex="\frac{1}{3}">\(\frac{1}{3}\)</span>を表します。有限個の長方形の和<span class="math-inline" data-latex="S_{n}">\(S_{n}\)</span>そのものは<span class="math-inline" data-latex="\frac{1}{3}">\(\frac{1}{3}\)</span>ではなく、<span class="math-inline" data-latex="n">\(n\)</span> → ∞の極限で一致します。</p>
+        <p id="primitive-values" class="callout"></p>
+      </section>
+      <noscript><p>グラフの表示と操作にはJavaScriptを有効にしてください。解説はそのまま読めます。</p></noscript>
+      <p class="device-note"><a href="../index.html">数学の教材一覧へ戻る</a></p>
+    </main>
+    <footer>education · 定積分と面積・区分求積法</footer>
+  </body>
+</html>

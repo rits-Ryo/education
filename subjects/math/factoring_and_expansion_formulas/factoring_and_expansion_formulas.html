@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>因数分解・展開の公式 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="factoring_and_expansion_formulas.css" />
+  <link rel="stylesheet" href="../../../vendor/katex-0.19.0/katex.min.css">
+    <link rel="stylesheet" href="../../../math-display.css">
+    <script defer src="../../../vendor/katex-0.19.0/katex.min.js"></script>
+    <script defer src="../../../vendor/katex-0.19.0/auto-render.min.js"></script>
+    <script defer src="../../../math-display.js"></script>
+    <script defer src="../../../number-format.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a>
+        /
+        <a href="../index.html">数学</a>
+        /
+        <span aria-current="page">因数分解・展開の公式</span>
+      </nav>
+      <section class="intro">
+        <p class="eyebrow">ALGEBRA FORMULAS</p>
+        <h1>因数分解・展開の公式</h1>
+        <p>因数分解・展開の公式は数学の基本。両方の向きの変形が完璧にできるようにしよう。</p>
+      </section>
+      <div class="reading-guide">
+        <p><strong>展開</strong>：積・累乗の形を、和・差の形にする。</p>
+        <p><strong>因数分解</strong>：和・差の形を、因数の積にする。</p>
+        <p>複雑な公式は「導出を見る」で途中の式を確認できます。</p>
+      </div>
+      <nav class="formula-nav" aria-label="公式の分類">
+        <a href="#basic">基本の公式</a>
+        <a href="#cubic">三乗・立方和と差</a>
+        <a href="#advanced">応用の公式</a>
+      </nav>
+      <section id="basic" class="formula-section" aria-labelledby="basic-heading">
+        <h2 id="basic-heading">基本の公式</h2>
+        <p class="section-note">共通因数と二次式の形を見つけよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 01</p>
+            <h3>共通因数でくくる</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}ax+ay&amp;= a(x+y)\end{aligned}" data-display="true">\[\begin{aligned}ax+ay&amp;= a(x+y)\end{aligned}\]</div>
+            <p class="note">すべての項に共通する因数を、括弧の外に出します。</p>
+            <p class="example math-block" data-latex="6x+9 = 3(2x+3)" data-display="true">\[\text{例：}6x+9 = 3(2x+3)\]</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 02</p>
+            <h3>和の平方</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a+b)^{2}&amp;= a^{2}+2ab+b^{2}\end{aligned}" data-display="true">\[\begin{aligned}(a+b)^{2}&amp;= a^{2}+2ab+b^{2}\end{aligned}\]</div>
+            <p class="note">中央の項は2<span class="math-inline" data-latex="ab">\(ab\)</span>。<span class="math-inline" data-latex="a^{2}+b^{2}">\(a^{2}+b^{2}\)</span>だけにはなりません。</p>
+            <p class="example math-block" data-latex="(x+3)^{2} = x^{2}+6x+9" data-display="true">\[\text{例：}(x+3)^{2} = x^{2}+6x+9\]</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 03</p>
+            <h3>差の平方</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a-b)^{2}&amp;= a^{2}-2ab+b^{2}\end{aligned}" data-display="true">\[\begin{aligned}(a-b)^{2}&amp;= a^{2}-2ab+b^{2}\end{aligned}\]</div>
+            <p class="note">中央の項は−2<span class="math-inline" data-latex="ab">\(ab\)</span>、最後の<span class="math-inline" data-latex="b^{2}">\(b^{2}\)</span>は正です。</p>
+            <p class="example math-block" data-latex="(x-3)^{2} = x^{2}-6x+9" data-display="true">\[\text{例：}(x-3)^{2} = x^{2}-6x+9\]</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 04</p>
+            <h3>平方の差</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a+b)(a-b)&amp;= a^{2}-b^{2}\end{aligned}" data-display="true">\[\begin{aligned}(a+b)(a-b)&amp;= a^{2}-b^{2}\end{aligned}\]</div>
+            <p class="note"><span class="math-inline" data-latex="a^{2}-b^{2}">\(a^{2}-b^{2}\)</span>は因数分解できます。<span class="math-inline" data-latex="a^{2}+b^{2}">\(a^{2}+b^{2}\)</span>とは区別しましょう。</p>
+            <p class="example math-block" data-latex="x^{2}-16 = (x+4)(x-4)" data-display="true">\[\text{例：}x^{2}-16 = (x+4)(x-4)\]</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 05</p>
+            <h3>たすき掛け公式</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(x+a)(x+b)&amp;= x^{2}+(a+b)x+ab\end{aligned}" data-display="true">\[\begin{aligned}(x+a)(x+b)&amp;= x^{2}+(a+b)x+ab\end{aligned}\]</div>
+            <p class="note">因数分解では、和が<span class="math-inline" data-latex="x">\(x\)</span>の係数、積が定数項になる2数を探します。</p>
+            <p class="example math-block" data-latex="x^{2}+5x+6 = (x+2)(x+3)" data-display="true">\[\text{例：}x^{2}+5x+6 = (x+2)(x+3)\]</p>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 06</p>
+            <h3>係数がある一次式の積</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(ax+b)(cx+d)&amp;= acx^{2}+(ad+bc)x+bd\end{aligned}" data-display="true">\[\begin{aligned}(ax+b)(cx+d)&amp;= acx^{2}+(ad+bc)x+bd\end{aligned}\]</div>
+            <p class="note"><span class="math-inline" data-latex="x">\(x\)</span>の係数は<span class="math-inline" data-latex="ad+bc">\(ad+bc\)</span>。因数分解のたすき掛けの根拠になります。</p>
+            <p class="example math-block" data-latex="6x^{2}+7x+2 = (2x+1)(3x+2)" data-display="true">\[\text{例：}6x^{2}+7x+2 = (2x+1)(3x+2)\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>分配法則で4つの積を作り、<span class="math-inline" data-latex="x">\(x\)</span>の項をまとめます。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(ax+b)(cx+d)&amp;= axcx+axd+bcx+bd\\&amp;= acx^{2}+(ad+bc)x+bd\end{aligned}" data-display="true">\[\begin{aligned}(ax+b)(cx+d)&amp;= axcx+axd+bcx+bd\\&amp;= acx^{2}+(ad+bc)x+bd\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <section id="cubic" class="formula-section" aria-labelledby="cubic-heading">
+        <h2 id="cubic-heading">三乗・立方和と差</h2>
+        <p class="section-note">三乗の展開と、立方和・立方差の因数分解を区別しよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 07</p>
+            <h3>和の三乗</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a+b)^{3}&amp;= a^{3}+3a^{2}b+3ab^{2}+b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a+b)^{3}&amp;= a^{3}+3a^{2}b+3ab^{2}+b^{3}\end{aligned}\]</div>
+            <p class="note">係数は1、3、3、1。<span class="math-inline" data-latex="a">\(a\)</span>の次数は下がり、<span class="math-inline" data-latex="b">\(b\)</span>の次数は上がります。</p>
+            <p class="example math-block" data-latex="(x+2)^{3} = x^{3}+6x^{2}+12x+8" data-display="true">\[\text{例：}(x+2)^{3} = x^{3}+6x^{2}+12x+8\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>まず平方の公式を使い、分配法則で展開します。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a+b)^{3}&amp;= (a^{2}+2ab+b^{2})(a+b)\\&amp;= a^{3}+a^{2}b+2a^{2}b+2ab^{2}+ab^{2}+b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a+b)^{3}&amp;= (a^{2}+2ab+b^{2})(a+b)\\&amp;= a^{3}+a^{2}b+2a^{2}b+2ab^{2}+ab^{2}+b^{3}\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p>同類項をまとめます。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a^{3}+a^{2}b+2a^{2}b+2ab^{2}+ab^{2}+b^{3}&amp;= a^{3}+3a^{2}b+3ab^{2}+b^{3}\end{aligned}" data-display="true">\[\begin{aligned}a^{3}+a^{2}b+2a^{2}b+2ab^{2}+ab^{2}+b^{3}&amp;= a^{3}+3a^{2}b+3ab^{2}+b^{3}\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 08</p>
+            <h3>差の三乗</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a-b)^{3}&amp;= a^{3}-3a^{2}b+3ab^{2}-b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a-b)^{3}&amp;= a^{3}-3a^{2}b+3ab^{2}-b^{3}\end{aligned}\]</div>
+            <p class="note">符号は＋、−、＋、−と交互です。</p>
+            <p class="example math-block" data-latex="(x-2)^{3} = x^{3}-6x^{2}+12x-8" data-display="true">\[\text{例：}(x-2)^{3} = x^{3}-6x^{2}+12x-8\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>差の平方を使って展開します。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a-b)^{3}&amp;= (a^{2}-2ab+b^{2})(a-b)\\&amp;= a^{3}-a^{2}b-2a^{2}b+2ab^{2}+ab^{2}-b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a-b)^{3}&amp;= (a^{2}-2ab+b^{2})(a-b)\\&amp;= a^{3}-a^{2}b-2a^{2}b+2ab^{2}+ab^{2}-b^{3}\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p>同類項をまとめます。和の三乗で<span class="math-inline" data-latex="b">\(b\)</span>を−<span class="math-inline" data-latex="b">\(b\)</span>に置き換えても導けます。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a^{3}-a^{2}b-2a^{2}b+2ab^{2}+ab^{2}-b^{3}&amp;= a^{3}-3a^{2}b+3ab^{2}-b^{3}\end{aligned}" data-display="true">\[\begin{aligned}a^{3}-a^{2}b-2a^{2}b+2ab^{2}+ab^{2}-b^{3}&amp;= a^{3}-3a^{2}b+3ab^{2}-b^{3}\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 09</p>
+            <h3>立方和の因数分解</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}a^{3}+b^{3}&amp;= (a+b)(a^{2}-ab+b^{2})\end{aligned}" data-display="true">\[\begin{aligned}a^{3}+b^{3}&amp;= (a+b)(a^{2}-ab+b^{2})\end{aligned}\]</div>
+            <p class="note">外は和、括弧の中央は−<span class="math-inline" data-latex="ab">\(ab\)</span>です。</p>
+            <p class="example math-block" data-latex="x^{3}+8 = (x+2)(x^{2}-2x+4)" data-display="true">\[\text{例：}x^{3}+8 = (x+2)(x^{2}-2x+4)\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>右辺を展開すると、<span class="math-inline" data-latex="a^{2}b">\(a^{2}b\)</span>と<span class="math-inline" data-latex="ab^{2}">\(ab^{2}\)</span>の項が打ち消し合います。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a+b)(a^{2}-ab+b^{2})&amp;= a^{3}-a^{2}b+ab^{2}+a^{2}b-ab^{2}+b^{3}\\&amp;= a^{3}+b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a+b)(a^{2}-ab+b^{2})&amp;= a^{3}-a^{2}b+ab^{2}+a^{2}b-ab^{2}+b^{3}\\&amp;= a^{3}+b^{3}\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 10</p>
+            <h3>立方差の因数分解</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}a^{3}-b^{3}&amp;= (a-b)(a^{2}+ab+b^{2})\end{aligned}" data-display="true">\[\begin{aligned}a^{3}-b^{3}&amp;= (a-b)(a^{2}+ab+b^{2})\end{aligned}\]</div>
+            <p class="note">外は差、括弧の中央は＋<span class="math-inline" data-latex="ab">\(ab\)</span>です。</p>
+            <p class="example math-block" data-latex="x^{3}-8 = (x-2)(x^{2}+2x+4)" data-display="true">\[\text{例：}x^{3}-8 = (x-2)(x^{2}+2x+4)\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>右辺を展開すると、中間の項が打ち消し合います。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a-b)(a^{2}+ab+b^{2})&amp;= a^{3}+a^{2}b+ab^{2}-a^{2}b-ab^{2}-b^{3}\\&amp;= a^{3}-b^{3}\end{aligned}" data-display="true">\[\begin{aligned}(a-b)(a^{2}+ab+b^{2})&amp;= a^{3}+a^{2}b+ab^{2}-a^{2}b-ab^{2}-b^{3}\\&amp;= a^{3}-b^{3}\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <section id="advanced" class="formula-section" aria-labelledby="advanced-heading">
+        <h2 id="advanced-heading">応用の公式</h2>
+        <p class="section-note">まとまりを作る、項を足して引く。基本公式を組み合わせよう。</p>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 11</p>
+            <h3>3項の平方</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}(a+b+c)^{2}&amp;= a^{2}+b^{2}+c^{2}+2ab+2bc+2ca\end{aligned}" data-display="true">\[\begin{aligned}(a+b+c)^{2}&amp;= a^{2}+b^{2}+c^{2}+2ab+2bc+2ca\end{aligned}\]</div>
+            <p class="note">各項の平方に、異なる2項の積の2倍をすべて足します。</p>
+            <p class="example math-block" data-latex="(x+y+1)^{2} = x^{2}+y^{2}+1+2xy+2x+2y" data-display="true">\[\text{例：}(x+y+1)^{2} = x^{2}+y^{2}+1+2xy+2x+2y\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p><span class="math-inline" data-latex="a+b">\(a+b\)</span>を1つのまとまりとして、和の平方を2回使います。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a+b+c)^{2}&amp;= (a+b)^{2}+2(a+b)c+c^{2}\\&amp;= a^{2}+2ab+b^{2}+2ac+2bc+c^{2}\end{aligned}" data-display="true">\[\begin{aligned}(a+b+c)^{2}&amp;= (a+b)^{2}+2(a+b)c+c^{2}\\&amp;= a^{2}+2ab+b^{2}+2ac+2bc+c^{2}\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p>項の順序を整理します。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a^{2}+2ab+b^{2}+2ac+2bc+c^{2}&amp;= a^{2}+b^{2}+c^{2}+2ab+2bc+2ca\end{aligned}" data-display="true">\[\begin{aligned}a^{2}+2ab+b^{2}+2ac+2bc+c^{2}&amp;= a^{2}+b^{2}+c^{2}+2ab+2bc+2ca\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 12</p>
+            <h3>3つの立方と3abc</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}a^{3}+b^{3}+c^{3}-3abc&amp;= (a+b+c)(a^{2}+b^{2}+c^{2}-ab-bc-ca)\end{aligned}" data-display="true">\[\begin{aligned}a^{3}+b^{3}+c^{3}-3abc&amp;= (a+b+c)(a^{2}+b^{2}+c^{2}-ab-bc-ca)\end{aligned}\]</div>
+            <p class="note">特に<span class="math-inline" data-latex="a+b+c=0">\(a+b+c=0\)</span>なら、a³+b³+c³=3abcです。</p>
+            <p class="example math-block" data-latex="a+b+c = 0 \implies  a^{3}+b^{3}+c^{3} = 3abc" data-display="true">\[\text{例：}a+b+c = 0 \implies  a^{3}+b^{3}+c^{3} = 3abc\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>3つの積に分けます。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a+b+c)(a^{2}+b^{2}+c^{2}-ab-bc-ca)&amp;= a(a^{2}+b^{2}+c^{2}-ab-bc-ca)+b(a^{2}+b^{2}+c^{2}-ab-bc-ca)+c(a^{2}+b^{2}+c^{2}-ab-bc-ca)\end{aligned}" data-display="true">\[\begin{aligned}(a+b+c)(a^{2}+b^{2}+c^{2}-ab-bc-ca)&amp;= a(a^{2}+b^{2}+c^{2}-ab-bc-ca)+b(a^{2}+b^{2}+c^{2}-ab-bc-ca)+c(a^{2}+b^{2}+c^{2}-ab-bc-ca)\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p>分配法則で展開します。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a(a^{2}+b^{2}+c^{2}-ab-bc-ca)+b(a^{2}+b^{2}+c^{2}-ab-bc-ca)+c(a^{2}+b^{2}+c^{2}-ab-bc-ca)&amp;= a^{3}+ab^{2}+ac^{2}-a^{2}b-abc-a^{2}c+a^{2}b+b^{3}+bc^{2}-ab^{2}-b^{2}c-abc+a^{2}c+b^{2}c+c^{3}-abc-bc^{2}-ac^{2}\end{aligned}" data-display="true">\[\begin{aligned}a(a^{2}+b^{2}+c^{2}-ab-bc-ca)+b(a^{2}+b^{2}+c^{2}-ab-bc-ca)+c(a^{2}+b^{2}+c^{2}-ab-bc-ca)&amp;= a^{3}+ab^{2}+ac^{2}-a^{2}b-abc-a^{2}c+a^{2}b+b^{3}+bc^{2}-ab^{2}-b^{2}c-abc+a^{2}c+b^{2}c+c^{3}-abc-bc^{2}-ac^{2}\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p><span class="math-inline" data-latex="a^{2}b">\(a^{2}b\)</span>などの6種類の項が相殺され、−abcが3つ残ります。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a^{3}+ab^{2}+ac^{2}-a^{2}b-abc-a^{2}c+a^{2}b+b^{3}+bc^{2}-ab^{2}-b^{2}c-abc+a^{2}c+b^{2}c+c^{3}-abc-bc^{2}-ac^{2}&amp;= a^{3}+b^{3}+c^{3}-3abc\end{aligned}" data-display="true">\[\begin{aligned}a^{3}+ab^{2}+ac^{2}-a^{2}b-abc-a^{2}c+a^{2}b+b^{3}+bc^{2}-ab^{2}-b^{2}c-abc+a^{2}c+b^{2}c+c^{3}-abc-bc^{2}-ac^{2}&amp;= a^{3}+b^{3}+c^{3}-3abc\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+          <article class="formula-card">
+            <p class="formula-number">FORMULA 13</p>
+            <h3>ソフィー・ジェルマンの恒等式</h3>
+            <div class="equation math-block" data-latex="\begin{aligned}a^{4}+4b^{4}&amp;= (a^{2}+2ab+2b^{2})(a^{2}-2ab+2b^{2})\end{aligned}" data-display="true">\[\begin{aligned}a^{4}+4b^{4}&amp;= (a^{2}+2ab+2b^{2})(a^{2}-2ab+2b^{2})\end{aligned}\]</div>
+            <p class="note">一見くくれない和も、平方の差に変形して因数分解できます。</p>
+            <p class="example math-block" data-latex="x^{4}+4 = (x^{2}+2x+2)(x^{2}-2x+2)" data-display="true">\[\text{例：}x^{4}+4 = (x^{2}+2x+2)(x^{2}-2x+2)\]</p>
+            <details>
+              <summary><span class="closed-label">導出を見る</span><span class="open-label">導出を閉じる</span></summary>
+              <ol class="derivation">
+                <li>
+                  <p>4<span class="math-inline" data-latex="a^{2}b^{2}">\(a^{2}b^{2}\)</span>を足して引き、平方の差を作ります。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}a^{4}+4b^{4}&amp;= a^{4}+4a^{2}b^{2}+4b^{4}-4a^{2}b^{2}\\&amp;= (a^{2}+2b^{2})^{2}-(2ab)^{2}\end{aligned}" data-display="true">\[\begin{aligned}a^{4}+4b^{4}&amp;= a^{4}+4a^{2}b^{2}+4b^{4}-4a^{2}b^{2}\\&amp;= (a^{2}+2b^{2})^{2}-(2ab)^{2}\end{aligned}\]</div>
+                </li>
+                <li>
+                  <p>平方の差の公式を使い、括弧の中を整理します。</p>
+                  <div class="equation math-block" data-latex="\begin{aligned}(a^{2}+2b^{2})^{2}-(2ab)^{2}&amp;= (a^{2}+2b^{2}+2ab)(a^{2}+2b^{2}-2ab)\\&amp;= (a^{2}+2ab+2b^{2})(a^{2}-2ab+2b^{2})\end{aligned}" data-display="true">\[\begin{aligned}(a^{2}+2b^{2})^{2}-(2ab)^{2}&amp;= (a^{2}+2b^{2}+2ab)(a^{2}+2b^{2}-2ab)\\&amp;= (a^{2}+2ab+2b^{2})(a^{2}-2ab+2b^{2})\end{aligned}\]</div>
+                </li>
+              </ol>
+            </details>
+          </article>
+        </div>
+      </section>
+      <p class="device-note"><a href="../index.html">数学の教材一覧へ戻る</a></p>
+    </main>
+    <footer>
+      education · 因数分解・展開の公式
+    </footer>
+  </body>
+</html>

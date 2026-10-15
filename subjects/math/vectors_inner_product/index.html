@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベクトルと内積 — なす角と正射影の可視化 | education</title>
+<link rel="stylesheet" href="../../../catalog.css"><link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../vendor/katex-0.19.0/katex.min.css">
+    <link rel="stylesheet" href="../../../math-display.css">
+    <script defer src="../../../vendor/katex-0.19.0/katex.min.js"></script>
+    <script defer src="../../../vendor/katex-0.19.0/auto-render.min.js"></script>
+    <script defer src="../../../math-display.js"></script>
+    <script defer src="../../../number-format.js"></script>
+<script defer src="engine.js"></script><script defer src="drawing.js"></script><script defer src="script.js"></script>
+</head>
+<body>
+<header class="site-header"><a href="../../../index.html">education <span>可視化して学ぼう。</span></a></header>
+<main>
+<nav class="breadcrumbs" aria-label="現在の位置"><a href="../../../index.html">エントランス</a> / <a href="../index.html">数学</a> / ベクトルと内積</nav>
+<section class="intro"><p>数学C · 平面ベクトル</p><h1>ベクトルと内積 — なす角と正射影の可視化</h1><p>2つのベクトルの終点を動かすと、なす角、垂線の足、正射影、内積が連動します。</p></section>
+<nav class="chapter-nav" aria-label="章一覧"><a href="#explore">図と操作</a><a href="#projection">正射影と内積</a><a href="#components">成分公式</a><a href="#orthogonal">直交条件</a></nav>
+<section class="lesson" id="explore"><h2>1. ベクトル・なす角・正射影を動かす</h2>
+<div class="workspace"><div><svg id="graph" viewBox="0 0 640 640" role="group" aria-label="ベクトルaとb、なす角と正射影の座標平面"></svg>
+<p class="caption">A・Bの丸いハンドルをドラッグ。キーボードではハンドルを選び矢印キーで操作できます。縦横は同じ縮尺です。</p>
+<p class="legend"><span class="a-key">青：a（終点A）</span> <span class="b-key">赤：b（終点B）</span> <span class="h-key">紫：正射影OH</span></p></div>
+<div class="panel"><fieldset><legend>ベクトルの成分</legend>
+<label class="a-key">a₁ <input id="a1" type="number" step="any" min="-1000000" max="1000000" value="4"></label>
+<label class="a-key">a₂ <input id="a2" type="number" step="any" min="-1000000" max="1000000" value="0"></label>
+<label class="b-key">b₁ <input id="b1" type="number" step="any" min="-1000000" max="1000000" value="3"></label>
+<label class="b-key">b₂ <input id="b2" type="number" step="any" min="-1000000" max="1000000" value="2"></label>
+<p id="error" role="status"></p><p class="caption">数値表示は小数点以下最大3桁の近似値です。微小な非零値は指数表記で区別します。入力範囲：±1000000。無効な入力では図の状態を維持します。</p></fieldset>
+<label><input id="snap" type="checkbox">格子点へのスナップ（ドラッグ・矢印キー）</label>
+<label>代表角 <select id="preset"><option value="">自由操作</option><option value="0">0°</option><option value="45">45°</option><option value="90">90°</option><option value="120">120°</option><option value="180">180°</option></select></label>
+<button id="reset" type="button">初期状態にリセット</button>
+<fieldset><legend>表示切り替え</legend><label><input id="show-angle" type="checkbox" checked>なす角</label><label><input id="show-projection" type="checkbox" checked>正射影</label><label><input id="show-perpendicular" type="checkbox" checked>垂線BH</label><label><input id="show-components" type="checkbox" checked>成分</label><label><input id="show-calculation" type="checkbox" checked>内積の計算過程</label></fieldset>
+</div></div>
+<div id="values" class="readout"></div><p id="sign" class="callout"></p><div id="calculation" class="formula"></div>
+<noscript>図の操作にはJavaScriptを有効にしてください。以下の数学的説明はそのまま読めます。</noscript>
+</section>
+<section class="lesson" id="projection"><h2>2. 正射影から内積へ</h2>
+<p>ベクトルの大きさは |a| = √(a₁² + a₂²)、|b| = √(b₁² + b₂²) です。零ベクトルでない2つのベクトルのなす角θは、0°から180°までの小さい方の角です。</p>
+<p>a ≠ 0 のとき、Bからaを含む<strong>直線</strong>に下ろした垂線の足をHとします。OHはbのa方向への正射影ベクトルです。Hは線分OAの外に出ることもあります。</p>
+<p class="formula math-block" data-latex="\begin{aligned}s&amp;=|\vec b|\cos\theta=\frac{\vec a\cdot\vec b}{|\vec a|}\\\overrightarrow{OH}&amp;=\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^2}\vec a\end{aligned}" data-display="true">\[\begin{aligned}s&amp;=|\vec b|\cos\theta=\frac{\vec a\cdot\vec b}{|\vec a|}\\\overrightarrow{OH}&amp;=\operatorname{proj}_{\vec a}\vec b=\frac{\vec a\cdot\vec b}{|\vec a|^2}\vec a\end{aligned}\]</p>
+<p><strong>スカラー射影は符号付きの数</strong>、<strong>正射影は向きを持つベクトル</strong>です。OHの大きさは |s| です。鋭角ではs &gt; 0でOHはaと同じ向き、直角ではs = 0でOHは零ベクトル、鈍角ではs &lt; 0でHはOを挟んでaの反対側に現れます。</p>
+<p class="formula math-block" data-latex="\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=|\vec a|\left(|\vec b|\cos\theta\right)=|\vec a|s" data-display="true">\[\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=|\vec a|\left(|\vec b|\cos\theta\right)=|\vec a|s\]</p>
+<p><strong>内積は「aの大きさ × bのa方向への符号付きの射影の長さ」というスカラー</strong>です。図の紫の矢印と、その符号付きの長さを数式に対応させると、内積の正・零・負の意味が分かります。</p>
+<p>a = 0ならaの方向がないため正射影は定義されません。b = 0かつa ≠ 0なら正射影は零ベクトルです。どちらかが零ベクトルならθとcosθは定義されませんが、内積は0です。この場合の射影は成分公式から計算します。</p>
+</section>
+<section class="lesson" id="components"><h2>3. 成分による内積とその導出</h2><p class="formula math-block" data-latex="\begin{aligned}\vec a&amp;=(a_1,a_2),\quad\vec b=(b_1,b_2)\\\vec a\cdot\vec b&amp;=a_1b_1+a_2b_2\end{aligned}" data-display="true">\[\begin{aligned}\vec a&amp;=(a_1,a_2),\quad\vec b=(b_1,b_2)\\\vec a\cdot\vec b&amp;=a_1b_1+a_2b_2\end{aligned}\]</p>
+<p>O、A、Bが作る三角形に余弦定理を用いると（同方向・反対方向ではその極限としても同じ式が成り立ちます）、</p>
+<p class="formula math-block" data-latex="|\vec a-\vec b|^2=|\vec a|^2+|\vec b|^2-2|\vec a||\vec b|\cos\theta" data-display="true">\[|\vec a-\vec b|^2=|\vec a|^2+|\vec b|^2-2|\vec a||\vec b|\cos\theta\]</p>
+<p>一方、座標から距離を求めて展開すると、</p>
+<p class="formula math-block" data-latex="\begin{aligned}(a_1-b_1)^2+(a_2-b_2)^2&amp;=|\vec a|^2+|\vec b|^2\\&amp;\quad-2(a_1b_1+a_2b_2)\end{aligned}" data-display="true">\[\begin{aligned}(a_1-b_1)^2+(a_2-b_2)^2&amp;=|\vec a|^2+|\vec b|^2\\&amp;\quad-2(a_1b_1+a_2b_2)\end{aligned}\]</p>
+<p>両式を比較して |a||b| cosθ = a₁b₁ + a₂b₂ を得ます。零ベクトルを含む場合にも成分公式は使え、内積は0となります。</p>
+<p>初期値では (4, 0)・(3, 2) = 4 × 3 + 0 × 2 = 12。正射影は (3, 0)、スカラー射影は3なので、幾何学的にも4 × 3 = 12です。内積の表示と符号は、同じ成分計算の値を基準にします。cosθ・射影もこの内積から求め、幾何式は同じ数学的な値を別の形で示しています。大きさやcosθの表示は丸めているため、画面上の数だけを再び掛けると末尾に差が出る場合があります。</p></section>
+<section class="lesson" id="orthogonal"><h2>4. 内積と直交条件</h2><p>零ベクトルでない2つのベクトルについて、|a||b| &gt; 0なので、</p><p class="formula math-block" data-latex="\begin{aligned}\vec a\perp\vec b&amp;\iff\theta=90^\circ\iff\vec a\cdot\vec b=0\\&amp;\iff a_1b_1+a_2b_2=0\end{aligned}" data-display="true">\[\begin{aligned}\vec a\perp\vec b&amp;\iff\theta=90^\circ\iff\vec a\cdot\vec b=0\\&amp;\iff a_1b_1+a_2b_2=0\end{aligned}\]</p><p>θ &lt; 90°なら内積は正、θ &gt; 90°なら負です。どちらかが零ベクトルの場合、内積0からなす角90°とは結論できません。</p><p>入力欄とドラッグで得た数の十進表記を基準に、成分の積と和を整数演算で求めます。この内積が厳密に0の場合だけ「直交」と表示します。|cosθ| &lt; 10⁻¹² の非零の内積は「ほぼ直交」と表示し、正負は保持します。この基準は |a・b| / (|a||b|) に対応する相対的な目安で、小さな内積を0に置き換えるものではありません。角度が表示上90°に丸められても、厳密な直交とは限りません。入力時に数値として保持できなかった桁は復元できません。90°のプリセットは b = (0, 4) を直接設定します。</p></section>
+<p><a href="../index.html">数学の教材一覧へ戻る</a></p>
+</main></body></html>

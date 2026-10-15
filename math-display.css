@@ -1,0 +1,7 @@
+.math-block { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .3rem .15rem; margin: .7rem 0; }
+.math-block .katex-display { margin: .3rem 0; text-align: left; }
+.math-inline { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; padding: .1em 0; }
+.katex { overflow-wrap: normal; white-space: nowrap; font-weight: normal; }
+.katex .cjk_fallback { font-family: var(--font-body); }
+[data-math-error] { color: #a12437; white-space: pre-wrap; overflow-wrap: anywhere; }
+.equation.math-block { display: block; }

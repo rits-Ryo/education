@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>単位円と三角関数 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../../vendor/katex-0.19.0/katex.min.css">
+    <link rel="stylesheet" href="../../../math-display.css">
+    <script defer src="../../../vendor/katex-0.19.0/katex.min.js"></script>
+    <script defer src="../../../vendor/katex-0.19.0/auto-render.min.js"></script>
+    <script defer src="../../../math-display.js"></script>
+    <script defer src="../../../number-format.js"></script>
+    <script defer src="math.js"></script>
+    <script defer src="drawing.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a> / <a href="../index.html">数学</a> / 単位円と三角関数
+      </nav>
+      <section class="intro">
+        <h1>単位円と三角関数</h1>
+        <p>円周上の点の座標が、角度に応じて変わります。</p>
+      </section>
+      <nav class="chapter-nav" aria-label="章一覧">
+        <a href="#definition">1 定義</a>
+        <a href="#graphs">2 グラフ</a>
+        <a href="#radians">3 弧度法</a>
+        <a href="#relations">4 相互関係</a>
+        <a href="#transform">5 グラフの変形</a>
+      </nav>
+
+      <section id="definition" class="lesson">
+        <h2>1. 単位円と三角関数の定義</h2>
+        <p>原点<span class="math-inline" data-latex="O">\(O\)</span>を中心とする半径1の円を単位円といいます。正の<span class="math-inline" data-latex="x">\(x\)</span>軸を始線とし、反時計回りを正、時計回りを負として角度<span class="math-inline" data-latex="\theta ">\(\theta \)</span>を測ります。角度<span class="math-inline" data-latex="\theta ">\(\theta \)</span>の動径と円との交点を<span class="math-inline" data-latex="P">\(P\)</span>とすると、<strong><span class="math-inline" data-latex="P">\(P\)</span>の<span class="math-inline" data-latex="x">\(x\)</span>座標を<span class="math-inline" data-latex="\cos  \theta ">\(\cos  \theta \)</span>、<span class="math-inline" data-latex="y">\(y\)</span>座標を<span class="math-inline" data-latex="\sin  \theta ">\(\sin  \theta \)</span></strong>と定義します。</p>
+        <p class="formula math-block" data-latex="P=(\cos\theta,\sin\theta)" data-display="true">\[P=(\cos\theta,\sin\theta)\]</p>
+        <div class="controls">
+          <label>角度の単位
+            <select id="unit"><option value="deg">度数法（°）</option><option value="rad">弧度法（rad）</option></select>
+          </label>
+          <label><span class="math-inline" data-latex="\theta ">\(\theta \)</span> <input id="angle-number" type="number" value="30" min="-720" max="720" step="any" /></label>
+          <label class="wide">角度 <input id="angle-slider" type="range" min="-720" max="720" step="any" value="30" /></label>
+        </div>
+        <p id="input-error" role="status"></p>
+        <div class="angle-buttons" aria-label="代表角へ移動">
+          <button type="button" data-angle="0">0°</button>
+          <button type="button" data-angle="30">30°</button>
+          <button type="button" data-angle="45">45°</button>
+          <button type="button" data-angle="60">60°</button>
+          <button type="button" data-angle="90">90°</button>
+          <button type="button" data-angle="120">120°</button>
+          <button type="button" data-angle="180">180°</button>
+          <button type="button" data-angle="270">270°</button>
+          <button type="button" data-angle="360">360°</button>
+          <button type="button" data-angle="-90">−90°</button>
+        </div>
+        <div class="visual-pair">
+          <div>
+            <svg id="circle" viewBox="0 0 440 440" role="img" aria-label="ドラッグできる単位円"></svg>
+            <p class="caption">点<span class="math-inline" data-latex="P">\(P\)</span>をドラッグすると角度が変わります。円をまたいで回すと周回数も保たれます。</p>
+          </div>
+          <div class="readings">
+            <p id="angle-label"></p>
+            <p id="point-label" class="formula"></p>
+            <p id="sin-label" class="sin-color"></p>
+            <p id="cos-label" class="cos-color"></p>
+            <p id="tan-label" class="tan-color"></p>
+            <p id="quadrant-label"></p>
+            <p>図の破線は各座標軸への射影です。<span class="math-inline" data-latex="x">\(x\)</span>座標は左右の位置、<span class="math-inline" data-latex="y">\(y\)</span>座標は上下の位置を表し、左側と下側では負になります。軸上の点は象限に含めません。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="graphs" class="lesson">
+        <h2>2. 単位円と三角関数のグラフ</h2>
+        <p>横軸<span class="math-inline" data-latex="x">\(x\)</span>は角度（弧度法）、縦軸<span class="math-inline" data-latex="y">\(y\)</span>は関数値です。同じ<span class="math-inline" data-latex="\theta ">\(\theta \)</span>に対して、単位円の<span class="math-inline" data-latex="y">\(y\)</span>座標が<span class="math-inline" data-latex="\sin ">\(\sin \)</span>のグラフの高さ、<span class="math-inline" data-latex="x">\(x\)</span>座標が<span class="math-inline" data-latex="\cos ">\(\cos \)</span>のグラフの高さになります。以下の単位円は第1章と同じ角度で動きます。</p>
+        <div class="controls">
+          <label><input id="show-sin" type="checkbox" checked /> <span class="math-inline" data-latex="\sin ">\(\sin \)</span>（実線）</label>
+          <label><input id="show-cos" type="checkbox" checked /> <span class="math-inline" data-latex="\cos ">\(\cos \)</span>（破線）</label>
+          <label><input id="show-tan" type="checkbox" /> <span class="math-inline" data-latex="\tan ">\(\tan \)</span>（点線）</label>
+          <label>表示する角度幅
+            <select id="graph-span"><option value="2">2π</option><option value="4" selected>4π</option><option value="8">8π</option></select>
+          </label>
+        </div>
+        <div class="visual-pair graph-pair">
+          <svg id="linked-circle" viewBox="0 0 440 440" role="img" aria-label="グラフと連動する単位円"></svg>
+          <svg id="graph" viewBox="0 0 760 360" role="img" aria-label="sin cos tanのグラフ"></svg>
+        </div>
+        <div class="controls">
+          <button id="play" type="button">再生</button>
+          <button id="reset" type="button">角度を0に戻す</button>
+          <label>再生速度
+            <select id="speed"><option value="15">15°/秒</option><option value="30" selected>30°/秒</option><option value="60">60°/秒</option><option value="120">120°/秒</option></select>
+          </label>
+        </div>
+        <p id="graph-values"></p>
+        <p><span class="math-inline" data-latex="\sin  x">\(\sin  x\)</span>と<span class="math-inline" data-latex="\cos  x">\(\cos  x\)</span>の基本周期（最小の正の周期）は2<span class="math-inline" data-latex="\pi ">\(\pi \)</span>です。どちらも最大値1、最小値−1を取り、<span class="math-inline" data-latex="\sin (-x) = -\sin  x">\(\sin (-x) = -\sin  x\)</span> は原点対称、<span class="math-inline" data-latex="\cos (-x) = \cos  x">\(\cos (-x) = \cos  x\)</span> は<span class="math-inline" data-latex="y">\(y\)</span>軸対称を表します。<span class="math-inline" data-latex="\sin  x = \cos (x - \frac{\pi }{2})">\(\sin  x = \cos (x - \frac{\pi }{2})\)</span> なので、両者は横方向に<span class="math-inline" data-latex="\frac{\pi }{2}">\(\frac{\pi }{2}\)</span>ずれた形です。</p>
+        <p><span class="math-inline" data-latex="\tan  x = \frac{\\sin  x}{\\cos  x}">\(\tan  x = \frac{\\sin  x}{\\cos  x}\)</span> は <span class="math-inline" data-latex="x = \frac{\pi }{2} + k\pi ">\(x = \frac{\pi }{2} + k\pi \)</span>（<span class="math-inline" data-latex="k">\(k\)</span>は整数）では定義されません。その位置に縦の漸近線を描き、左右のグラフはつなぎません。基本周期は<span class="math-inline" data-latex="\pi ">\(\pi \)</span>で、<span class="math-inline" data-latex="\tan (-x) = -\tan  x">\(\tan (-x) = -\tan  x\)</span> です。値は上下に限りなく大きくなり、最大値・最小値はありません。</p>
+      </section>
+
+      <section id="radians" class="lesson">
+        <h2>3. 弧度法と周期性</h2>
+        <p>半径<span class="math-inline" data-latex="r">\(r\)</span>の円で長さ<span class="math-inline" data-latex="\ell ">\(\ell \)</span>の円弧に対応する中心角の大きさを、<span class="math-inline" data-latex="\frac{\ell }{r} rad">\(\frac{\ell }{r} rad\)</span>と定めます。したがって <span class="math-inline" data-latex="\ell  = r|\theta |">\(\ell  = r|\theta |\)</span> です。単位円では、回転してたどった弧の長さは |<span class="math-inline" data-latex="\theta |">\(\theta |\)</span> になります。負の角度でも長さは負にならず、回転の向きだけが逆になります。</p>
+        <p class="formula math-block" data-latex="180^\circ=\pi\,\mathrm{rad},\qquad360^\circ=2\pi\,\mathrm{rad}" data-display="true">\[180^\circ=\pi\,\mathrm{rad},\qquad360^\circ=2\pi\,\mathrm{rad}\]</p>
+        <p class="formula math-block" data-latex="\text{弧度法}=\text{度数法}\times\frac\pi{180}" data-display="true">\[\text{弧度法}=\text{度数法}\times\frac\pi{180}\]</p>
+        <svg id="arc-circle" viewBox="0 0 440 440" role="img" aria-label="角度と円弧の長さ"></svg>
+        <p id="arc-label" class="callout"></p>
+        <p>1周を超える角度や負の角度も一般角として扱います。<span class="math-inline" data-latex="\theta ">\(\theta \)</span>と<span class="math-inline" data-latex="\theta  + 2k\pi ">\(\theta  + 2k\pi \)</span>は同じ円周上の点を表します。図の色付きの弧は、整数回の回転を除いた残りの回転です。たどった全長と周回数は上の数値に示しています。</p>
+        <p class="formula math-block" data-latex="\begin{aligned}\sin(\theta+2k\pi)&amp;=\sin\theta\\\cos(\theta+2k\pi)&amp;=\cos\theta\end{aligned}" data-display="true">\[\begin{aligned}\sin(\theta+2k\pi)&amp;=\sin\theta\\\cos(\theta+2k\pi)&amp;=\cos\theta\end{aligned}\]</p>
+        <p><span class="math-inline" data-latex="\theta  + \pi ">\(\theta  + \pi \)</span>では点<span class="math-inline" data-latex="P">\(P\)</span>が原点の反対側に移り、<span class="math-inline" data-latex="\sin ">\(\sin \)</span>と<span class="math-inline" data-latex="\cos ">\(\cos \)</span>の符号が両方変わります。その比<span class="math-inline" data-latex="\tan ">\(\tan \)</span>は変わらないため、<span class="math-inline" data-latex="\tan (\theta  + k\pi ) = \tan  \theta ">\(\tan (\theta  + k\pi ) = \tan  \theta \)</span> が成り立ちます（定義される角度に限ります）。</p>
+      </section>
+
+      <section id="relations" class="lesson">
+        <h2>4. 三角関数の相互関係</h2>
+        <div class="visual-pair">
+          <svg id="triangle-circle" viewBox="0 0 440 440" role="img" aria-label="単位円と直角三角形"></svg>
+          <div>
+            <p class="formula math-block" data-latex="\sin^2\theta+\cos^2\theta=1" data-display="true">\[\sin^2\theta+\cos^2\theta=1\]</p>
+            <p><span class="math-inline" data-latex="P">\(P\)</span>から<span class="math-inline" data-latex="x">\(x\)</span>軸に垂線を下ろし、その足を<span class="math-inline" data-latex="H">\(H\)</span>とします。直角三角形OHPの辺の長さは |<span class="math-inline" data-latex="\cos  \theta |">\(\cos  \theta |\)</span>、|<span class="math-inline" data-latex="\sin  \theta |">\(\sin  \theta |\)</span>、1です。三平方の定理から <span class="math-inline" data-latex="\cos ^{2}\theta  + \sin ^{2}\theta  = 1">\(\cos ^{2}\theta  + \sin ^{2}\theta  = 1\)</span> が得られます。<span class="math-inline" data-latex="P">\(P\)</span>が軸上にある場合も、単位円の方程式 <span class="math-inline" data-latex="x^{2} + y^{2} = 1">\(x^{2} + y^{2} = 1\)</span> により成立します。</p>
+            <p id="identity-values" class="callout"></p>
+            <p class="formula math-block" data-latex="\tan\theta=\frac{\sin\theta}{\cos\theta}\quad(\cos\theta\ne0)" data-display="true">\[\tan\theta=\frac{\sin\theta}{\cos\theta}\quad(\cos\theta\ne0)\]</p>
+            <p>第1象限の鋭角では、直角三角形の「対辺/隣辺」が<span class="math-inline" data-latex="\frac{\\sin  \theta }{\\cos  \theta }">\(\frac{\\sin  \theta }{\\cos  \theta }\)</span>に一致します。一般角でもこの座標の比で<span class="math-inline" data-latex="\tan ">\(\tan \)</span>を定義します。図の直線<span class="math-inline" data-latex="OP">\(OP\)</span>の傾きがその比を表します。<span class="math-inline" data-latex="\cos  \theta  = 0">\(\cos  \theta  = 0\)</span> では分母が0になり、<span class="math-inline" data-latex="\tan  \theta ">\(\tan  \theta \)</span>は定義されません。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="transform" class="lesson">
+        <h2>5. 三角関数のグラフの変形</h2>
+        <p class="formula math-block" data-latex="\begin{aligned}y&amp;=a\sin(bx+c)+d\\y&amp;=a\cos(bx+c)+d\end{aligned}" data-display="true">\[\begin{aligned}y&amp;=a\sin(bx+c)+d\\y&amp;=a\cos(bx+c)+d\end{aligned}\]</p>
+        <div class="controls">
+          <label>関数 <select id="transform-kind"><option value="sin">sin</option><option value="cos">cos</option></select></label>
+          <button id="transform-reset" type="button">係数をリセット</button>
+        </div>
+        <div id="coefficient-controls" class="coefficient-controls"></div>
+        <p class="caption">係数は−5〜5。0以外の絶対値は0.000001以上です。<span class="math-inline" data-latex="c">\(c\)</span>の単位は<span class="math-inline" data-latex="rad">\(rad\)</span>です。</p>
+        <p id="coefficient-error" role="status"></p>
+        <svg id="transform-graph" viewBox="0 0 760 360" role="img" aria-label="係数で変形する三角関数のグラフ"></svg>
+        <p class="caption">灰色の破線は <span class="math-inline" data-latex="y = \sin  x">\(y = \sin  x\)</span> または <span class="math-inline" data-latex="y = \cos  x">\(y = \cos  x\)</span>、紫の実線は変形したグラフです。横軸は−2<span class="math-inline" data-latex="\pi ">\(\pi \)</span>から2<span class="math-inline" data-latex="\pi ">\(\pi \)</span>です。</p>
+        <p id="transform-formula" class="formula"></p>
+        <p id="transform-properties" class="callout"></p>
+        <p><span class="math-inline" data-latex="a \ne  0">\(a \ne  0\)</span>、<span class="math-inline" data-latex="b \ne  0">\(b \ne  0\)</span> のとき、中心線<span class="math-inline" data-latex="y = d">\(y = d\)</span>からの振れ幅（振幅）は |<span class="math-inline" data-latex="a|">\(a|\)</span>、基本周期は 2<span class="math-inline" data-latex="\pi /|b|">\(\pi /|b|\)</span> です。<span class="math-inline" data-latex="bx + c = b(x - (-\frac{c}{b}))">\(bx + c = b(x - (-\frac{c}{b}))\)</span> と変形できるため、<span class="math-inline" data-latex="y = a \sin (bx) + d">\(y = a \sin (bx) + d\)</span> などを横方向に −<span class="math-inline" data-latex="\frac{c}{b}">\(\frac{c}{b}\)</span> だけ平行移動した形になります。正なら右、負なら左への移動です。</p>
+        <p><span class="math-inline" data-latex="a">\(a\)</span>が負になると中心線<span class="math-inline" data-latex="y = d">\(y = d\)</span>に関して上下に反転します。<span class="math-inline" data-latex="b">\(b\)</span>の符号を変えると、<span class="math-inline" data-latex="c">\(c\)</span>を固定したグラフは<span class="math-inline" data-latex="y">\(y\)</span>軸に関して左右に反転します。<span class="math-inline" data-latex="d">\(d\)</span>は上下方向の移動量です。<span class="math-inline" data-latex="a = 0">\(a = 0\)</span>なら<span class="math-inline" data-latex="y = d">\(y = d\)</span>、<span class="math-inline" data-latex="b = 0">\(b = 0\)</span>なら<span class="math-inline" data-latex="y = a \sin  c + d">\(y = a \sin  c + d\)</span>または<span class="math-inline" data-latex="y = a \cos  c + d">\(y = a \cos  c + d\)</span>という定数関数になります。この場合、最小の正の周期はなく、−<span class="math-inline" data-latex="\frac{c}{b}">\(\frac{c}{b}\)</span>による説明も使えません。</p>
+      </section>
+      <noscript><p class="callout">図の操作にはJavaScriptを有効にしてください。解説はそのまま読めます。</p></noscript>
+      <p class="device-note"><a href="../index.html">数学の教材一覧に戻る</a></p>
+    </main>
+    <footer>education · 単位円と三角関数</footer>
+  </body>
+</html>

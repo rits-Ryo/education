@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>微分 — 接線の傾きと導関数 | education</title>
+    <link rel="stylesheet" href="../../../catalog.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../../vendor/katex-0.19.0/katex.min.css">
+    <link rel="stylesheet" href="../../../math-display.css">
+    <script defer src="../../../vendor/katex-0.19.0/katex.min.js"></script>
+    <script defer src="../../../vendor/katex-0.19.0/auto-render.min.js"></script>
+    <script defer src="../../../math-display.js"></script>
+    <script defer src="../../../number-format.js"></script>
+    <script defer src="engine.js"></script>
+    <script defer src="drawing.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../../../index.html">education <span>可視化して学ぼう。</span></a>
+    </header>
+    <main>
+      <nav class="breadcrumbs" aria-label="現在の位置">
+        <a href="../../../index.html">エントランス</a> / <a href="../index.html">数学</a> / 微分
+      </nav>
+      <section class="intro">
+        <h1>微分 — 接線の傾きと導関数</h1>
+        <p>2点を結ぶ直線の傾きから、各点の接線の傾きへ。その変化が導関数のグラフになります。</p>
+      </section>
+      <nav class="chapter-nav" aria-label="章一覧">
+        <a href="#average">1 平均変化率</a>
+        <a href="#tangent">2 接線</a>
+        <a href="#linked">3 導関数</a>
+        <a href="#variation">4 増減と極値</a>
+        <a href="#advanced">発展 微分可能性</a>
+      </nav>
+
+      <section class="lesson" aria-labelledby="controls-title">
+        <h2 id="controls-title">全章で共通の関数と点<span class="math-inline" data-latex="P">\(P\)</span></h2>
+        <div class="controls">
+          <label>関数
+            <select id="function">
+              <option value="square">f(x) = x²</option>
+              <option value="cube">f(x) = x³</option>
+              <option value="cubic">f(x) = x³ − 3x</option>
+              <option value="downward">f(x) = −x² + 4x</option>
+              <option value="sine">f(x) = sin x</option>
+              <option value="cosine">f(x) = cos x</option>
+            </select>
+          </label>
+          <label class="slider-label"><span class="math-inline" data-latex="a">\(a\)</span> <input id="a-slider" type="range" min="-2" max="2" step="0.01" value="1" /></label>
+          <label><span class="math-inline" data-latex="a">\(a\)</span>の数値 <input id="a-number" type="number" min="-2" max="2" step="any" value="1" /></label>
+        </div>
+        <p id="input-error" role="status"></p>
+        <p id="function-label" class="formula"></p>
+        <p>点<span class="math-inline" data-latex="P">\(P\)</span>の位置は全章で連動します。各グラフの<span class="math-inline" data-latex="P">\(P\)</span>もドラッグできます。<span class="math-inline" data-latex="\sin ">\(\sin \)</span>と<span class="math-inline" data-latex="\cos ">\(\cos \)</span>の<span class="math-inline" data-latex="x">\(x\)</span>は弧度法（<span class="math-inline" data-latex="rad">\(rad\)</span>）です。数値は小数点以下最大3桁の近似表示、関数と導関数の式は解析式です。</p>
+      </section>
+
+      <section id="average" class="lesson">
+        <h2>1. 平均変化率から微分係数へ</h2>
+        <p>曲線上の2点 <span class="math-inline" data-latex="P(a, f(a))">\(P(a, f(a))\)</span>、<span class="math-inline" data-latex="Q(a + h, f(a + h))">\(Q(a + h, f(a + h))\)</span>を結ぶ直線を割線といいます。横の変化量は<span class="math-inline" data-latex="h">\(h\)</span>、縦の変化量は<span class="math-inline" data-latex="f(a + h) - f(a)">\(f(a + h) - f(a)\)</span>なので、割線の傾きはその比です。<span class="math-inline" data-latex="h">\(h\)</span>が負なら<span class="math-inline" data-latex="Q">\(Q\)</span>は<span class="math-inline" data-latex="P">\(P\)</span>の左側になります。</p>
+        <p class="formula math-block" data-latex="\text{平均変化率}=\frac{f(a+h)-f(a)}h\quad(h\ne0)" data-display="true">\[\text{平均変化率}=\frac{f(a+h)-f(a)}h\quad(h\ne0)\]</p>
+        <div class="controls">
+          <label class="slider-label"><span class="math-inline" data-latex="h">\(h\)</span> <input id="h-slider" type="range" min="-1" max="1" step="0.001" value="0.8" /></label>
+          <label><span class="math-inline" data-latex="h">\(h\)</span>の数値 <input id="h-number" type="number" min="-1" max="1" step="any" value="0.8" /></label>
+          <label><input id="show-secant" type="checkbox" checked /> 割線（青の破線）</label>
+          <label><input id="show-tangent" type="checkbox" checked /> 接線（紫の実線）</label>
+        </div>
+        <p id="h-error" role="status"></p>
+        <svg id="secant-graph" viewBox="0 0 720 420" role="img" aria-label="点PとQ、割線と接線"></svg>
+        <p class="caption"><span class="math-inline" data-latex="P">\(P\)</span>と<span class="math-inline" data-latex="Q">\(Q\)</span>はドラッグできます。<span class="math-inline" data-latex="Q">\(Q\)</span>のドラッグは<span class="math-inline" data-latex="h">\(h\)</span>を−1〜1に制限します。<span class="math-inline" data-latex="P">\(P\)</span>と<span class="math-inline" data-latex="Q">\(Q\)</span>が重なる場合はスライダーで<span class="math-inline" data-latex="h">\(h\)</span>を変更できます。</p>
+        <div class="controls">
+          <button id="approach" type="button">hを0へ近づける</button>
+          <button id="h-reset" type="button">hを0.8に戻す</button>
+        </div>
+        <div id="rate-values" class="callout"></div>
+        <p class="formula math-block" data-latex="f&#x27;(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}h" data-display="true">\[f&#x27;(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}h\]</p>
+        <p><span class="math-inline" data-latex="h">\(h\)</span>を0に近づけるとは、<span class="math-inline" data-latex="h">\(h\)</span>を0そのものにするのではなく、0でない値のまま、正と負の両側からその絶対値を小さくすることです。そのとき平均変化率が同じ1つの有限の値に近づけば、その極限を微分係数<span class="math-inline" data-latex="f&#x27;(a)">\(f&#x27;(a)\)</span>といいます。極限とは、<span class="math-inline" data-latex="h">\(h\)</span>を十分0に近づけることで、平均変化率をその値にいくらでも近づけられることです。</p>
+        <p><span class="math-inline" data-latex="h = 0">\(h = 0\)</span>を直接代入すると分子も分母も0となり、平均変化率は定義されません。微分係数は<span class="math-inline" data-latex="\frac{0}{0}">\(\frac{0}{0}\)</span>の計算結果ではなく、極限値です。割線の傾きの極限が接線の傾きになり、左右からの極限が一致しない点では微分係数は存在しません。</p>
+        <details>
+          <summary><span class="math-inline" data-latex="x^{2}">\(x^{2}\)</span>の場合の式の変形</summary>
+          <p class="formula math-block" data-latex="\begin{aligned}\frac{(a+h)^2-a^2}h&amp;=\frac{2ah+h^2}h\\&amp;=2a+h\quad(h\ne0)\end{aligned}" data-display="true">\[\begin{aligned}\frac{(a+h)^2-a^2}h&amp;=\frac{2ah+h^2}h\\&amp;=2a+h\quad(h\ne0)\end{aligned}\]</p>
+          <p><span class="math-inline" data-latex="h">\(h\)</span>を0に近づけると2<span class="math-inline" data-latex="a + h">\(a + h\)</span>は2<span class="math-inline" data-latex="a">\(a\)</span>に近づきます。したがって <span class="math-inline" data-latex="f&#x27;(a) = 2a">\(f&#x27;(a) = 2a\)</span> です。<span class="math-inline" data-latex="h">\(h\)</span>を約分できるのは<span class="math-inline" data-latex="h \ne  0">\(h \ne  0\)</span>の場合だけです。</p>
+        </details>
+      </section>
+
+      <section id="tangent" class="lesson">
+        <h2>2. 接線の傾きと導関数</h2>
+        <p>点<span class="math-inline" data-latex="P">\(P\)</span>を通り、傾き<span class="math-inline" data-latex="f&#x27;(a)">\(f&#x27;(a)\)</span>を持つ直線が接線です。点と傾きから、接線の方程式は次のように表せます。</p>
+        <p class="formula math-block" data-latex="y=f&#x27;(a)(x-a)+f(a)" data-display="true">\[y=f&#x27;(a)(x-a)+f(a)\]</p>
+        <svg id="tangent-graph" viewBox="0 0 720 420" role="img" aria-label="曲線上のPと接線"></svg>
+        <div id="tangent-values" class="callout"></div>
+        <p><span class="math-inline" data-latex="f&#x27;(a)">\(f&#x27;(a)\)</span>は「特定の位置<span class="math-inline" data-latex="a">\(a\)</span>での微分係数」という数値です。一方、位置を変数<span class="math-inline" data-latex="x">\(x\)</span>として各点の微分係数を対応させた関数<span class="math-inline" data-latex="f&#x27;(x)">\(f&#x27;(x)\)</span>を<strong>導関数</strong>といいます。導関数は、元の関数の各点における接線の傾きを表す関数です。</p>
+      </section>
+
+      <section id="linked" class="lesson">
+        <h2>3. 元の関数と導関数のグラフ</h2>
+        <div class="graph-pair">
+          <div>
+            <h3 id="original-title"><span class="math-inline" data-latex="y = f(x)">\(y = f(x)\)</span></h3>
+            <svg id="original-graph" viewBox="0 0 720 420" role="img" aria-label="元の関数のグラフ"></svg>
+          </div>
+          <div>
+            <h3 id="derivative-title"><span class="math-inline" data-latex="y = f&#x27;(x)">\(y = f&#x27;(x)\)</span></h3>
+            <svg id="derivative-graph" viewBox="0 0 720 420" role="img" aria-label="導関数のグラフ"></svg>
+          </div>
+        </div>
+        <p id="linked-values" class="callout"></p>
+        <div class="controls">
+          <button id="play" type="button">点Pを再生</button>
+          <button id="reset" type="button">位置をリセット</button>
+          <label>速度
+            <select id="speed"><option value="0.2">0.2 /秒</option><option value="0.5" selected>0.5 /秒</option><option value="1">1 /秒</option></select>
+          </label>
+        </div>
+        <p><span class="math-inline" data-latex="P(a, f(a))">\(P(a, f(a))\)</span>と<span class="math-inline" data-latex="R(a, f&#x27;(a))">\(R(a, f&#x27;(a))\)</span>の<span class="math-inline" data-latex="x">\(x\)</span>座標は同じ<span class="math-inline" data-latex="a">\(a\)</span>です。元の関数の接線の傾きが、そのまま導関数上の<span class="math-inline" data-latex="R">\(R\)</span>の<span class="math-inline" data-latex="y">\(y\)</span>座標になります。初期の<span class="math-inline" data-latex="f(x) = x^{2}">\(f(x) = x^{2}\)</span>では、<span class="math-inline" data-latex="f&#x27;(x) = 2x">\(f&#x27;(x) = 2x\)</span>なので、<span class="math-inline" data-latex="a">\(a\)</span> &lt; 0で傾きは負、<span class="math-inline" data-latex="a = 0">\(a = 0\)</span>で0、<span class="math-inline" data-latex="a">\(a\)</span> &gt; 0で正です。</p>
+      </section>
+
+      <section id="variation" class="lesson">
+        <h2>4. 導関数と増減・極値</h2>
+        <p>ある区間のすべての内点で<span class="math-inline" data-latex="f&#x27;(x)">\(f&#x27;(x)\)</span> &gt; 0なら、その区間で<span class="math-inline" data-latex="f">\(f\)</span>は増加し、<span class="math-inline" data-latex="f&#x27;(x)">\(f&#x27;(x)\)</span> &lt; 0なら減少します。図では増加区間を緑の実線、減少区間を赤の破線で区別します。下の一覧にも区間と符号を表示しています。</p>
+        <div class="controls">
+          <label><input id="show-variation" type="checkbox" checked /> グラフを増減で色分け</label>
+          <label><input id="show-stationary" type="checkbox" checked /> 停留点を表示</label>
+        </div>
+        <svg id="variation-graph" viewBox="0 0 720 420" role="img" aria-label="増加区間、減少区間と停留点"></svg>
+        <div id="interval-list"></div>
+        <div id="stationary-list" class="callout"></div>
+        <p class="caption">金色の輪は停留点です。導関数のグラフでは同じ<span class="math-inline" data-latex="x">\(x\)</span>座標の<span class="math-inline" data-latex="y = 0">\(y = 0\)</span>に表示します。</p>
+        <p><span class="math-inline" data-latex="f&#x27;(x) = 0">\(f&#x27;(x) = 0\)</span>となる点を停留点といいます。導関数の符号が正から負に変わると極大、負から正に変わると極小になります。極値はその点の近くでの大小を表し、定義域全体での最大・最小とは区別します。</p>
+        <p><strong><span class="math-inline" data-latex="f&#x27;(x) = 0">\(f&#x27;(x) = 0\)</span>だけでは極値とは限りません。</strong><span class="math-inline" data-latex="f(x) = x^{3}">\(f(x) = x^{3}\)</span>では<span class="math-inline" data-latex="f&#x27;(x) = 3x^{2}">\(f&#x27;(x) = 3x^{2}\)</span>です。<span class="math-inline" data-latex="x = 0">\(x = 0\)</span>で導関数は0ですが、左右で正のままで、関数は増加を続けるので極値ではありません。<span class="math-inline" data-latex="f(x) = x^{3} - 3x">\(f(x) = x^{3} - 3x\)</span>では<span class="math-inline" data-latex="f&#x27;(x) = 3(x - 1)(x + 1)">\(f&#x27;(x) = 3(x - 1)(x + 1)\)</span>となり、<span class="math-inline" data-latex="x = -1">\(x = -1\)</span>で正から負（極大値2）、<span class="math-inline" data-latex="x = 1">\(x = 1\)</span>で負から正（極小値−2）へ変わります。</p>
+        <p class="caption">表示範囲の端はグラフを切り取った位置であり、定義域の端ではありません。選べる6つの関数の定義域は実数全体です。</p>
+      </section>
+
+      <section id="advanced" class="lesson">
+        <h2>発展：連続でも微分できない関数</h2>
+        <p><span class="math-inline" data-latex="f(x) = |x|">\(f(x) = |x|\)</span>は<span class="math-inline" data-latex="x = 0">\(x = 0\)</span>で連続ですが、微分可能ではありません。<span class="math-inline" data-latex="a = 0">\(a = 0\)</span>での平均変化率は |<span class="math-inline" data-latex="h|/h">\(h|/h\)</span> です。<span class="math-inline" data-latex="h">\(h\)</span> &gt; 0では1、<span class="math-inline" data-latex="h">\(h\)</span> &lt; 0では−1となり、左右の極限が一致しません。<span class="math-inline" data-latex="f&#x27;(0)">\(f&#x27;(0)\)</span>は未定義です。</p>
+        <svg id="absolute-graph" viewBox="0 0 720 420" role="img" aria-label="絶対値関数と左右の割線"></svg>
+        <p class="formula math-block" data-latex="\lim_{h\to0^-}\frac{|h|}h=-1,\qquad\lim_{h\to0^+}\frac{|h|}h=1" data-display="true">\[\lim_{h\to0^-}\frac{|h|}h=-1,\qquad\lim_{h\to0^+}\frac{|h|}h=1\]</p>
+        <p class="callout"><span class="math-inline" data-latex="f&#x27;(0)">\(f&#x27;(0)\)</span>：未定義。傾き1と−1の直線は左右の割線の極限であり、1本の接線ではありません。</p>
+        <p>微分可能であれば連続ですが、連続であることだけでは微分可能とは限りません。図のような折れ曲がりでは、接線の傾きが1つに定まりません。</p>
+      </section>
+      <noscript><p>図の表示と操作にはJavaScriptを有効にしてください。解説はそのまま読めます。</p></noscript>
+      <p class="device-note"><a href="../index.html">数学の教材一覧へ戻る</a></p>
+    </main>
+    <footer>education · 微分</footer>
+  </body>
+</html>
